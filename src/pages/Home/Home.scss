@@ -1,0 +1,10 @@
+.histogram-container {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px;
+  padding: 20px;
+  background-color: #f9f9f9; /* Light background for the area around the chart */
+  border-radius: 8px; /* Soften the edges of the container */
+}

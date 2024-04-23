@@ -1,0 +1,35 @@
+.miner-metrics {
+  border-radius: 12px;
+  padding: 20px;
+  margin: 20px auto;
+  width: 80%;
+  box-sizing: border-box;
+  background-color: #f9f9f9;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e0e0e0;
+
+  h1 {
+    color: #2c3e50;
+    font-size: 28px;
+    font-family: 'Segoe UI', Helvetica, Arial, sans-serif;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  p {
+    color: #555;
+    font-size: 20px;
+    font-family: 'Segoe UI', Helvetica, Arial, sans-serif;
+    margin-top: 5px;
+    text-align: center;
+  }
+
+  &:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+    transition: all 0.3s ease;
+  }
+}
+.thirtyDayReturns{
+  font-weight: bold;
+}
