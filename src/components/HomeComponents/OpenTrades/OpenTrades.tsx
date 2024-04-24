@@ -9,10 +9,11 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { CellContext, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
 
+import { useAllFieldsFilled } from '../../../hooks/useAllFieldsFilled.tsx';
 import { positions } from '../../../mock/positions.ts';
 import './OpenTradesStyles.scss';
 
-interface NewTableData {
+export interface NewTableData {
   pair: string;
   longShort: string;
   takeProfitPercent: number;
@@ -34,7 +35,9 @@ const TableCellInput = ({
   const [localValue, setLocalValue] = useState(formik.values[fieldKey]);
 
   const handleLocalChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    event.preventDefault();
     setLocalValue(event.target.value);
+    formik.handleChange(event.target.value);
   };
 
   const handleBlur = () => {
@@ -128,18 +131,22 @@ const OpenTrades: React.FC<IOpenTrades> = ({ minerHotkey }) => {
     }
     setAnchorEl(null);
   };
+  type NewTableDataKeys = keyof NewTableData;
+  const requiredFields: NewTableDataKeys[] = [
+    'pair',
+    'longShort',
+    'takeProfitPercent',
+    'stopLossPercent',
+    'leverage',
+    'returnPercent',
+  ];
 
-  const allFieldsFilled = () => {
-    const requiredFields = [
-      'pair',
-      'longShort',
-      'takeProfitPercent',
-      'stopLossPercent',
-      'leverage',
-      'returnPercent',
-    ];
-    return requiredFields.every((field) => Boolean((formik.values as any)[field]));
-  };
+  const allFieldsFilled = useAllFieldsFilled(
+    formik.values,
+    formik.touched,
+    formik.initialValues,
+    requiredFields
+  );
   const isNewRow = (row: NewTableData) =>
     row.pair === '' &&
     row.longShort === '' &&
@@ -235,17 +242,11 @@ const OpenTrades: React.FC<IOpenTrades> = ({ minerHotkey }) => {
           <div data-column='Actions'>
             {isNewRow(info.row.original) ? (
               <>
-                {allFieldsFilled() && (
-                  <button
-                    className='exit'
-                    type='submit'
-                    onClick={() => formik.handleSubmit()}
-                    disabled={!formik.isValid}
-                  >
+                {allFieldsFilled && formik.isValid ? (
+                  <button className='exit' type='submit' onClick={() => formik.handleSubmit()}>
                     Accept
                   </button>
-                )}
-                {!allFieldsFilled() && (
+                ) : (
                   <button
                     className='exit'
                     onClick={() => setData(data.filter((_, idx) => idx !== info.row.index))}
@@ -266,7 +267,7 @@ const OpenTrades: React.FC<IOpenTrades> = ({ minerHotkey }) => {
         ),
       },
     ],
-    [data, formik]
+    [data, formik, allFieldsFilled]
   );
 
   const table = useReactTable({
