@@ -160,7 +160,7 @@ const OpenTrades: React.FC<IOpenTrades> = ({ minerHotkey }) => {
               value={formik.values.pair}
               onChange={(e) => formik.setFieldValue('pair', e.target.value)}
               onBlur={formik.handleBlur}
-              className={`generated-input ${formik.errors.pair && formik.touched.pair ? 'error' : ''}`}
+              className={`generated-input-select ${formik.errors.pair && formik.touched.pair ? 'error' : ''}`}
             >
               <option value=''>Select a pair</option>
               <option value='BTC/USD'>BTC/USD</option>
@@ -179,7 +179,7 @@ const OpenTrades: React.FC<IOpenTrades> = ({ minerHotkey }) => {
               value={formik.values.longShort}
               onChange={(e) => formik.setFieldValue('longShort', e.target.value)}
               onBlur={formik.handleBlur}
-              className={`generated-input ${formik.errors.longShort && formik.touched.longShort ? 'error' : ''}`}
+              className={`generated-input-select ${formik.errors.longShort && formik.touched.longShort ? 'error' : ''}`}
             >
               <option value=''>Select position</option>
               <option value='Long'>LONG</option>

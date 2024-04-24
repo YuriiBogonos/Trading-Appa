@@ -47,7 +47,6 @@
             position: sticky;
             top: 0;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-
             &:not(:last-child) {
                 border-right-color: #0056b3;
             }
@@ -63,6 +62,7 @@
 
         td {
             font-size: 14px;
+            text-align: center;
         }
     }
 
@@ -98,6 +98,15 @@
     }
 }
 .generated-input {
+    background-color: #dfe0e1; /* Set a dark background color for input fields */
+    color: black; /* Set a light text color for better contrast */
+    border: none;
+    height: 25px;
+    width: 50px;
+    border-radius: 8px;
+    text-align: center;
+}
+.generated-input-select {
     background-color: #dfe0e1; /* Set a dark background color for input fields */
     color: black; /* Set a light text color for better contrast */
     border: none;
