@@ -5,7 +5,9 @@
     padding: 20px;
     background: inherit;
     border-radius: 8px;
-    overflow: hidden;
+    overflow-x: auto;
+    width: 85%;
+    margin: 0 auto;
     .exit{
         font-family: 'Segoe UI', Helvetica, Arial, sans-serif;
         border: none;
@@ -95,7 +97,10 @@
         }
     }
 }
-.generated-input{
-    background-color: inherit;
+.generated-input {
+    background-color: #dfe0e1; /* Set a dark background color for input fields */
+    color: black; /* Set a light text color for better contrast */
     border: none;
+    padding: 10px; /* Add some padding for better readability */
+    border-radius: 8px;
 }

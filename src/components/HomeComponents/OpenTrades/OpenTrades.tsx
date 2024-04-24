@@ -1,5 +1,8 @@
 import React, { useMemo, useState } from 'react';
 
+import { useFormik } from 'formik';
+import * as yup from 'yup';
+
 import AddIcon from '@mui/icons-material/Add';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
@@ -21,11 +24,32 @@ interface NewTableData {
 interface IOpenTrades {
   minerHotkey: string;
 }
+const TableCellInput = ({ formik, fieldKey }) => {
+  const [localValue, setLocalValue] = useState(formik.values[fieldKey]);
 
+  const handleLocalChange = (event) => {
+    setLocalValue(event.target.value);
+  };
+
+  const handleBlur = () => {
+    formik.setFieldValue(fieldKey, parseFloat(localValue) || 0);
+    formik.handleBlur(fieldKey);
+  };
+
+  return (
+    <input
+      type='number'
+      name={fieldKey}
+      value={localValue}
+      onChange={handleLocalChange}
+      onBlur={handleBlur}
+      className={`generated-input ${formik.errors[fieldKey] && formik.touched[fieldKey] ? 'error' : ''}`}
+    />
+  );
+};
 const OpenTrades: React.FC<IOpenTrades> = ({ minerHotkey }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-
   const filteredData = useMemo(() => {
     const minerPositions = positions.find((p) => p[minerHotkey])?.[minerHotkey].positions || [];
     return minerPositions
@@ -40,6 +64,44 @@ const OpenTrades: React.FC<IOpenTrades> = ({ minerHotkey }) => {
       }));
   }, [minerHotkey]);
   const [data, setData] = useState<NewTableData[]>([...filteredData]);
+  const validationSchema = yup.object({
+    pair: yup.string().required('Pair is required'),
+    longShort: yup.string().required('Position type is required'),
+    takeProfitPercent: yup
+      .number()
+      .min(0, 'Take profit must be at least 0%')
+      .max(50, 'Take profit cannot exceed 50%')
+      .required('Take profit is required'),
+    stopLossPercent: yup
+      .number()
+      .min(0, 'Stop loss must be at least 0%')
+      .max(9, 'Stop loss cannot exceed 9%')
+      .required('Stop loss is required'),
+    leverage: yup
+      .number()
+      .min(0.001, 'Leverage must be at least 0.001')
+      .max(200, 'Leverage cannot exceed 200')
+      .required('Leverage is required'),
+    returnPercent: yup.number().required('Return percent is required'),
+  });
+  const formik = useFormik({
+    initialValues: {
+      pair: '',
+      longShort: '',
+      takeProfitPercent: 0,
+      stopLossPercent: 0,
+      leverage: 0,
+      returnPercent: 0,
+    },
+    validationSchema,
+    onSubmit: (values) => {
+      setData((prevData) => {
+        const filteredData = prevData.filter((data) => !isNewRow(data));
+        return [...filteredData, { ...values }];
+      });
+      formik.resetForm();
+    },
+  });
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -50,34 +112,30 @@ const OpenTrades: React.FC<IOpenTrades> = ({ minerHotkey }) => {
   };
 
   const handleOpenNewTrade = () => {
-    const newData = {
-      pair: '',
-      longShort: '',
-      takeProfitPercent: 0,
-      stopLossPercent: 0,
-      leverage: 0,
-      returnPercent: 0,
-    };
-    setData([...data, newData]);
-    handleClose();
+    if (!data.some(isNewRow)) {
+      setData((prevData) => [...prevData, { ...formik.initialValues }]);
+    }
+    setAnchorEl(null);
   };
 
-  const handleCellChange = (rowIndex: number, columnId: string, value: any) => {
-    const newData = [...data];
-    newData[rowIndex] = { ...newData[rowIndex], [columnId]: value };
-    setData(newData);
+  const allFieldsFilled = () => {
+    const requiredFields = [
+      'pair',
+      'longShort',
+      'takeProfitPercent',
+      'stopLossPercent',
+      'leverage',
+      'returnPercent',
+    ];
+    return requiredFields.every((field) => Boolean(formik.values[field]));
   };
-
-  const isNewRow = (row: NewTableData) => {
-    return (
-      row.pair === '' &&
-      row.longShort === '' &&
-      row.takeProfitPercent === 0 &&
-      row.stopLossPercent === 0 &&
-      row.leverage === 0 &&
-      row.returnPercent === 0
-    );
-  };
+  const isNewRow = (row: NewTableData) =>
+    row.pair === '' &&
+    row.longShort === '' &&
+    row.takeProfitPercent === 0 &&
+    row.stopLossPercent === 0 &&
+    row.leverage === 0 &&
+    row.returnPercent === 0;
 
   const columns = useMemo(
     () => [
@@ -86,13 +144,18 @@ const OpenTrades: React.FC<IOpenTrades> = ({ minerHotkey }) => {
         accessorKey: 'pair',
         cell: (info: CellContext<NewTableData, any>) =>
           isNewRow(info.row.original) ? (
-            <input
-              value={info.getValue()}
-              className='generated-input'
-              onChange={(e) => handleCellChange(info.row.index, 'pair', e.target.value)}
-            />
+            <select
+              value={formik.values.pair}
+              onChange={(e) => formik.setFieldValue('pair', e.target.value)}
+              onBlur={formik.handleBlur}
+              className={`generated-input ${formik.errors.pair && formik.touched.pair ? 'error' : ''}`}
+            >
+              <option value=''>Select a pair</option>
+              <option value='BTC/USD'>BTC/USD</option>
+              <option value='ETH/USD'>ETH/USD</option>
+            </select>
           ) : (
-            info.getValue()
+            <span>{info.getValue()}</span>
           ),
       },
       {
@@ -100,13 +163,18 @@ const OpenTrades: React.FC<IOpenTrades> = ({ minerHotkey }) => {
         accessorKey: 'longShort',
         cell: (info: CellContext<NewTableData, any>) =>
           isNewRow(info.row.original) ? (
-            <input
-              value={info.getValue()}
-              className='generated-input'
-              onChange={(e) => handleCellChange(info.row.index, 'longShort', e.target.value)}
-            />
+            <select
+              value={formik.values.longShort}
+              onChange={(e) => formik.setFieldValue('longShort', e.target.value)}
+              onBlur={formik.handleBlur}
+              className={`generated-input ${formik.errors.longShort && formik.touched.longShort ? 'error' : ''}`}
+            >
+              <option value=''>Select position</option>
+              <option value='Long'>LONG</option>
+              <option value='Short'>SHORT</option>
+            </select>
           ) : (
-            info.getValue()
+            <span>{info.getValue()}</span>
           ),
       },
       {
@@ -114,16 +182,9 @@ const OpenTrades: React.FC<IOpenTrades> = ({ minerHotkey }) => {
         accessorKey: 'takeProfitPercent',
         cell: (info: CellContext<NewTableData, any>) =>
           isNewRow(info.row.original) ? (
-            <input
-              type='number'
-              className='generated-input'
-              value={info.getValue()}
-              onChange={(e) =>
-                handleCellChange(info.row.index, 'takeProfitPercent', parseFloat(e.target.value))
-              }
-            />
+            <TableCellInput formik={formik} fieldKey={'takeProfitPercent'} />
           ) : (
-            info.getValue()
+            <span>{info.getValue()}</span>
           ),
       },
       {
@@ -131,16 +192,9 @@ const OpenTrades: React.FC<IOpenTrades> = ({ minerHotkey }) => {
         accessorKey: 'stopLossPercent',
         cell: (info: CellContext<NewTableData, any>) =>
           isNewRow(info.row.original) ? (
-            <input
-              type='number'
-              className='generated-input'
-              value={info.getValue()}
-              onChange={(e) =>
-                handleCellChange(info.row.index, 'stopLossPercent', parseFloat(e.target.value))
-              }
-            />
+            <TableCellInput formik={formik} fieldKey={'stopLossPercent'} />
           ) : (
-            info.getValue()
+            <span>{info.getValue()}</span>
           ),
       },
       {
@@ -148,16 +202,9 @@ const OpenTrades: React.FC<IOpenTrades> = ({ minerHotkey }) => {
         accessorKey: 'leverage',
         cell: (info: CellContext<NewTableData, any>) =>
           isNewRow(info.row.original) ? (
-            <input
-              type='number'
-              className='generated-input'
-              value={info.getValue()}
-              onChange={(e) =>
-                handleCellChange(info.row.index, 'leverage', parseFloat(e.target.value))
-              }
-            />
+            <TableCellInput formik={formik} fieldKey={'leverage'} />
           ) : (
-            info.getValue()
+            <span>{info.getValue()}</span>
           ),
       },
       {
@@ -165,33 +212,52 @@ const OpenTrades: React.FC<IOpenTrades> = ({ minerHotkey }) => {
         accessorKey: 'returnPercent',
         cell: (info: CellContext<NewTableData, any>) =>
           isNewRow(info.row.original) ? (
-            <input
-              type='number'
-              className='generated-input'
-              value={info.getValue()}
-              onChange={(e) =>
-                handleCellChange(info.row.index, 'returnPercent', parseFloat(e.target.value))
-              }
-            />
+            <TableCellInput formik={formik} fieldKey={'returnPercent'} />
           ) : (
-            info.getValue()
+            <span>{info.getValue()}</span>
           ),
       },
       {
-        id: 'exitPosition',
-        header: () => (
-          <button className='exit' onClick={handleExitPosition}>
-            Exit Position
-          </button>
-        ),
+        id: 'actions',
         accessorKey: '',
+        cell: (info: CellContext<NewTableData, any>) => (
+          <div data-column='Actions'>
+            {isNewRow(info.row.original) ? (
+              <>
+                {allFieldsFilled() && (
+                  <button
+                    className='exit'
+                    type='submit'
+                    onClick={formik.handleSubmit}
+                    disabled={!formik.isValid}
+                  >
+                    Accept
+                  </button>
+                )}
+                {!allFieldsFilled() && (
+                  <button
+                    className='exit'
+                    onClick={() => setData(data.filter((_, idx) => idx !== info.row.index))}
+                  >
+                    Cancel
+                  </button>
+                )}
+              </>
+            ) : (
+              <button
+                className='exit'
+                onClick={() => console.log('Exiting position:', info.row.original)}
+              >
+                Exit Position
+              </button>
+            )}
+          </div>
+        ),
       },
     ],
-    [data, handleCellChange]
+    [data, formik]
   );
-  const handleExitPosition = () => {
-    console.log('Test');
-  };
+
   const table = useReactTable({
     data: data,
     columns,
@@ -212,11 +278,9 @@ const OpenTrades: React.FC<IOpenTrades> = ({ minerHotkey }) => {
           <AddIcon />
         </IconButton>
         <Menu id='simple-menu' anchorEl={anchorEl} keepMounted open={open} onClose={handleClose}>
-          {
-            <MenuItem key='newTrade' onClick={handleOpenNewTrade}>
-              Open New Trade
-            </MenuItem>
-          }
+          <MenuItem key='newTrade' onClick={handleOpenNewTrade}>
+            Open New Trade
+          </MenuItem>
         </Menu>
         <table>
           <thead>

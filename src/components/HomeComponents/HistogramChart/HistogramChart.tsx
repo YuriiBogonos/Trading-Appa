@@ -1,6 +1,15 @@
 import React from 'react';
 
-import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Cell,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from 'recharts';
 
 import './HistogramChartStyles.scss';
 
@@ -105,6 +114,7 @@ const CustomTooltip = ({ active, payload }: any) => {
 };
 
 const HistogramChart: React.FC = () => {
+  const myHotkey = 'R';
   return (
     <>
       <h1 className='histogram'>Competition</h1>
@@ -114,7 +124,14 @@ const HistogramChart: React.FC = () => {
           <XAxis dataKey='minerHotkey' stroke='#8884d8' tick={{ fill: '#2e4355', fontSize: 14 }} />
           <YAxis tick={{ fill: '#2e4355', fontSize: 14 }} />
           <Tooltip content={<CustomTooltip />} />
-          <Bar dataKey='value' fill='#8884d8' barSize={30} />
+          <Bar dataKey='value' fill='#8884d8' barSize={30}>
+            {data.map((entry, index) => (
+              <Cell
+                key={`cell-${index}`}
+                fill={entry.minerHotkey === myHotkey ? '#82ca9d' : '#8884d8'}
+              />
+            ))}
+          </Bar>
         </BarChart>
       </ResponsiveContainer>
     </>

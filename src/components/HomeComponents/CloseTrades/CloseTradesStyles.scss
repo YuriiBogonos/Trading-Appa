@@ -5,7 +5,9 @@
   padding: 20px;
   background: inherit;
   border-radius: 8px;
-  overflow: hidden;
+  overflow-x: auto;
+  width: 85%;
+  margin: 0 auto;
   h1 {
     color: black;
     font-size: 24px;
