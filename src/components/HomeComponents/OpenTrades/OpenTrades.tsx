@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
 
-import { useFormik } from 'formik';
+import { FormikProps, useFormik } from 'formik';
 import * as yup from 'yup';
 
 import AddIcon from '@mui/icons-material/Add';
@@ -24,15 +24,26 @@ interface NewTableData {
 interface IOpenTrades {
   minerHotkey: string;
 }
-const TableCellInput = ({ formik, fieldKey }) => {
+const TableCellInput = ({
+  formik,
+  fieldKey,
+}: {
+  formik: FormikProps<NewTableData>;
+  fieldKey: keyof NewTableData;
+}) => {
   const [localValue, setLocalValue] = useState(formik.values[fieldKey]);
 
-  const handleLocalChange = (event) => {
+  const handleLocalChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setLocalValue(event.target.value);
   };
 
   const handleBlur = () => {
-    formik.setFieldValue(fieldKey, parseFloat(localValue) || 0);
+    const value = typeof localValue === 'string' ? parseFloat(localValue) : localValue;
+    if (isNaN(value as number)) {
+      formik.setFieldValue(fieldKey, '');
+    } else {
+      formik.setFieldValue(fieldKey, value.toString());
+    }
     formik.handleBlur(fieldKey);
   };
 
@@ -84,7 +95,7 @@ const OpenTrades: React.FC<IOpenTrades> = ({ minerHotkey }) => {
       .required('Leverage is required'),
     returnPercent: yup.number().required('Return percent is required'),
   });
-  const formik = useFormik({
+  const formik = useFormik<NewTableData>({
     initialValues: {
       pair: '',
       longShort: '',
@@ -127,7 +138,7 @@ const OpenTrades: React.FC<IOpenTrades> = ({ minerHotkey }) => {
       'leverage',
       'returnPercent',
     ];
-    return requiredFields.every((field) => Boolean(formik.values[field]));
+    return requiredFields.every((field) => Boolean((formik.values as any)[field]));
   };
   const isNewRow = (row: NewTableData) =>
     row.pair === '' &&
@@ -228,7 +239,7 @@ const OpenTrades: React.FC<IOpenTrades> = ({ minerHotkey }) => {
                   <button
                     className='exit'
                     type='submit'
-                    onClick={formik.handleSubmit}
+                    onClick={() => formik.handleSubmit()}
                     disabled={!formik.isValid}
                   >
                     Accept
