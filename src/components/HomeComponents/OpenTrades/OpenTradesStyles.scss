@@ -98,17 +98,18 @@
     }
 }
 .generated-input {
-    background-color: #dfe0e1; /* Set a dark background color for input fields */
-    color: black; /* Set a light text color for better contrast */
+    background-color: #dfe0e1;
+    color: black;
     border: none;
     height: 25px;
-    width: 50px;
+    width: 100px;
+    padding-left: 10px;
     border-radius: 8px;
     text-align: center;
 }
 .generated-input-select {
-    background-color: #dfe0e1; /* Set a dark background color for input fields */
-    color: black; /* Set a light text color for better contrast */
+    background-color: #dfe0e1;
+    color: black;
     border: none;
     height: 25px;
     border-radius: 8px;
