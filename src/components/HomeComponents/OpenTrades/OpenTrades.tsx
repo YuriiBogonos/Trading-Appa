@@ -32,22 +32,15 @@ const TableCellInput = ({
   formik: FormikProps<NewTableData>;
   fieldKey: keyof NewTableData;
 }) => {
-  const [localValue, setLocalValue] = useState(formik.values[fieldKey]);
+  const localValue = formik.values[fieldKey]; // Use formik's value directly
 
   const handleLocalChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    event.preventDefault();
-    setLocalValue(event.target.value);
-    formik.handleChange(event.target.value);
+    const { value } = event.target;
+    formik.setFieldValue(fieldKey, value); // Update Formik's value directly
   };
 
   const handleBlur = () => {
-    const value = typeof localValue === 'string' ? parseFloat(localValue) : localValue;
-    if (isNaN(value as number)) {
-      formik.setFieldValue(fieldKey, '');
-    } else {
-      formik.setFieldValue(fieldKey, value.toString());
-    }
-    formik.handleBlur(fieldKey);
+    formik.handleBlur(fieldKey); // Handle blur event in Formik
   };
 
   return (
@@ -61,6 +54,7 @@ const TableCellInput = ({
     />
   );
 };
+
 const OpenTrades: React.FC<IOpenTrades> = ({ minerHotkey }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
