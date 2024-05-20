@@ -1,25 +1,37 @@
 import React, { useState } from 'react';
 
+import { Position, Root } from '@/types/types.ts';
 import { CellContext, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
 
-import { positions } from '../../../mock/positions.ts';
-import { CloseTradeData } from '../../../mock/positions.ts';
 import './CloseTradesStyles.scss';
 
 interface ICloseTrades {
   minerHotkey: string;
+  checkpointData: Root | undefined;
 }
-
+interface FilteredData {
+  trade_pair: string;
+  average_entry_price: number;
+  initial_entry_price: number;
+  net_leverage: number;
+  position_type: string;
+  open_ms: number;
+  close_ms: number;
+  return_at_close: number;
+}
 const formatDate = (timestamp: unknown): string => {
   const date = new Date(timestamp as number);
   return date.toISOString().replace('T', ' ').slice(0, -5);
 };
 
-const CloseTrades: React.FC<ICloseTrades> = ({ minerHotkey }) => {
-  const [isOpen, setIsOpen] = useState(false); // State to track table visibility
+const CloseTrades: React.FC<ICloseTrades> = ({ minerHotkey, checkpointData }) => {
+  const [isOpen, setIsOpen] = useState(false);
 
-  const filteredData = React.useMemo<any[]>(() => {
-    const minerPositions = positions.find((p) => p[minerHotkey])?.[minerHotkey].positions || [];
+  const filteredData = React.useMemo<FilteredData[]>(() => {
+    if (!checkpointData) return [];
+
+    const minerPositions: Position[] = checkpointData.positions[minerHotkey]?.positions || [];
+
     return minerPositions
       .filter((item) => item.is_closed_position)
       .map((position) => ({
@@ -32,13 +44,13 @@ const CloseTrades: React.FC<ICloseTrades> = ({ minerHotkey }) => {
         close_ms: position.close_ms,
         return_at_close: position.return_at_close,
       }));
-  }, [minerHotkey]);
+  }, [checkpointData, minerHotkey]);
 
   const toggleTable = () => {
-    setIsOpen(!isOpen); // Toggle the state to show/hide the table
+    setIsOpen(!isOpen);
   };
 
-  const data = React.useMemo<CloseTradeData[]>(() => filteredData, [filteredData]);
+  const data = React.useMemo<FilteredData[]>(() => filteredData, [filteredData]);
 
   const columns = React.useMemo(
     () => [
@@ -49,12 +61,12 @@ const CloseTrades: React.FC<ICloseTrades> = ({ minerHotkey }) => {
       {
         header: 'Avg. Entry Price',
         accessorKey: 'average_entry_price',
-        cell: (info: CellContext<CloseTradeData, number>) => info.getValue().toFixed(5),
+        cell: (info: CellContext<FilteredData, number>) => info.getValue().toFixed(5),
       },
       {
         header: 'Initial Entry Price',
         accessorKey: 'initial_entry_price',
-        cell: (info: CellContext<CloseTradeData, number>) => info.getValue().toFixed(5),
+        cell: (info: CellContext<FilteredData, number>) => info.getValue().toFixed(5),
       },
       {
         header: 'Net Leverage',
@@ -67,17 +79,17 @@ const CloseTrades: React.FC<ICloseTrades> = ({ minerHotkey }) => {
       {
         header: 'Open',
         accessorKey: 'open_ms',
-        cell: (info: CellContext<CloseTradeData, unknown>) => formatDate(info.getValue()),
+        cell: (info: CellContext<FilteredData, unknown>) => formatDate(info.getValue()),
       },
       {
         header: 'Close',
         accessorKey: 'close_ms',
-        cell: (info: CellContext<CloseTradeData, unknown>) => formatDate(info.getValue()),
+        cell: (info: CellContext<FilteredData, unknown>) => formatDate(info.getValue()),
       },
       {
         header: 'Return',
         accessorKey: 'return_at_close',
-        cell: (info: CellContext<CloseTradeData, number>) => info.getValue().toFixed(10),
+        cell: (info: CellContext<FilteredData, number>) => info.getValue().toFixed(10),
       },
     ],
     []
@@ -92,7 +104,7 @@ const CloseTrades: React.FC<ICloseTrades> = ({ minerHotkey }) => {
   return (
     <>
       <div className='close-trades'>
-        <h1>Close Trades</h1>
+        <h1>Closed Trades</h1>
         <table>
           <thead>
             {table.getHeaderGroups().map((headerGroup) => (

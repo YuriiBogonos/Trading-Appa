@@ -1,5 +1,6 @@
 import { Route, Routes } from 'react-router-dom';
 
+import './App.scss';
 import routes from './routes/routes.ts';
 
 export default function App() {

@@ -3,28 +3,58 @@ import React from 'react';
 import { Field, Form, Formik } from 'formik';
 
 import ErrorMessage from '@/components/HomeComponents/ValidationMetricField/ErrorMessage.tsx';
+import { Root } from '@/types/types.ts';
 import { TextField } from '@mui/material';
+import { styled } from '@mui/material/styles';
 
-import { positions } from '../../../mock/positions.ts';
 import './ValidationMetricFieldStyle.scss';
 
 interface ValidationMetricFieldProps {
   onValidHotkeyChange: (isValid: boolean, thirtyDayReturns?: number, minerHotkey?: string) => void;
+  checkpointData: Root | undefined;
 }
 
-const ValidationMetricField: React.FC<ValidationMetricFieldProps> = ({ onValidHotkeyChange }) => {
-  const validateMetric = (value: string) => {
-    let exists = false;
-    let thirtyDayReturns: number | undefined = undefined;
+const CustomTextField = styled(TextField)({
+  '& .MuiInputBase-root': {
+    backgroundColor: '#f7f6f3',
+  },
+  '& .MuiOutlinedInput-root': {
+    '& fieldset': {
+      borderColor: '#9e3909',
+    },
+    '&:hover fieldset': {
+      borderColor: '#9e3909',
+    },
+    '&.Mui-focused fieldset': {
+      borderColor: '#9e3909',
+    },
+  },
+  '& .MuiInputLabel-root': {
+    color: '#9e3909',
+  },
+  '& .MuiInputLabel-root.Mui-focused': {
+    color: '#9e3909',
+  },
+});
 
-    const position = positions.find((p) => Object.keys(p).includes(value));
-    if (position) {
-      exists = true;
-      thirtyDayReturns = position[value].thirty_day_returns;
+const ValidationMetricField: React.FC<ValidationMetricFieldProps> = ({
+  onValidHotkeyChange,
+  checkpointData,
+}) => {
+  const validateMetric = (minerKey: string) => {
+    if (!checkpointData || !checkpointData.positions[minerKey]) {
+      onValidHotkeyChange(false);
+      return 'invalid';
     }
 
-    onValidHotkeyChange(exists, thirtyDayReturns, value);
-    return exists ? undefined : 'invalid';
+    const positionData = checkpointData.positions[minerKey];
+
+    if (positionData) {
+      const { thirty_day_returns } = positionData;
+      onValidHotkeyChange(true, thirty_day_returns, minerKey);
+    } else {
+      onValidHotkeyChange(false);
+    }
   };
 
   return (
@@ -43,7 +73,7 @@ const ValidationMetricField: React.FC<ValidationMetricFieldProps> = ({ onValidHo
       {({ errors, touched }) => (
         <Form className='form'>
           <Field
-            as={TextField}
+            as={CustomTextField}
             name='minerHotkey'
             label='Miner Hotkey'
             variant='outlined'

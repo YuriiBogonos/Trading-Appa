@@ -1,12 +1,14 @@
 import { useState } from 'react';
 
-import CloseTrades from '@/components/HomeComponents/CloseTrades/CloseTrades.tsx';
-import Footer from '@/components/HomeComponents/Footer/Footer.tsx';
-import HistogramChart from '@/components/HomeComponents/HistogramChart/HistogramChart.tsx';
-import MinerMetrics from '@/components/HomeComponents/MinerMetrics/MinerMetrics.tsx';
-import OpenTrades from '@/components/HomeComponents/OpenTrades/OpenTrades.tsx';
-import ValidationMetricField from '@/components/HomeComponents/ValidationMetricField/ValidationMetricField.tsx';
+import CloseTrades from '@/components/HomeComponents/CloseTrades/CloseTrades';
+import Footer from '@/components/HomeComponents/Footer/Footer';
+import HistogramChart from '@/components/HomeComponents/HistogramChart/HistogramChart';
+import MinerMetrics from '@/components/HomeComponents/MinerMetrics/MinerMetrics';
+import OpenTrades from '@/components/HomeComponents/OpenTrades/OpenTrades';
+import ValidationMetricField from '@/components/HomeComponents/ValidationMetricField/ValidationMetricField';
+import { CircularProgress } from '@mui/material';
 
+import { useFetchLinkQuery } from '../../store/features/taoshiApi/taoshiApi.ts';
 import './Home.scss';
 
 function Home() {
@@ -14,6 +16,7 @@ function Home() {
   const [thirtyDayReturns, setThirtyDayReturns] = useState<number | undefined>(undefined);
   const [minerHotkey, setMinerHotkey] = useState<string>('');
 
+  const { data, error, isLoading } = useFetchLinkQuery();
   const handleValidHotkeyChange = (
     isValid: boolean,
     thirtyDayReturns?: number,
@@ -21,22 +24,41 @@ function Home() {
   ) => {
     setIsValidHotkey(isValid);
     setThirtyDayReturns(thirtyDayReturns);
-    setMinerHotkey(hotkey || ''); // Ensure the hotkey is updated even if it's an empty string
+    setMinerHotkey(hotkey || '');
   };
+  if (isLoading)
+    return (
+      <div
+        style={{
+          height: '100dvh',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          color: 'gray',
+        }}
+      >
+        <CircularProgress color='inherit' />
+      </div>
+    );
+  if (error) return <div>Error loading data</div>;
 
   return (
     <>
-      <ValidationMetricField onValidHotkeyChange={handleValidHotkeyChange} />
-      {isValidHotkey && (
+      <ValidationMetricField checkpointData={data} onValidHotkeyChange={handleValidHotkeyChange} />
+      {isValidHotkey ? (
         <>
           <MinerMetrics thirtyDayReturns={thirtyDayReturns} />
-          <OpenTrades minerHotkey={minerHotkey} />
-          <CloseTrades minerHotkey={minerHotkey} />
+          <OpenTrades checkpointData={data} minerHotkey={minerHotkey} />
+          <CloseTrades checkpointData={data} minerHotkey={minerHotkey} />
           <div className='histogram-container'>
-            <HistogramChart />
+            <HistogramChart checkpointData={data} minerHotkey={minerHotkey} />
           </div>
           <Footer />
         </>
+      ) : (
+        <div className='enter-hotkey'>
+          <p>Enter Miner Hotkey</p>
+        </div>
       )}
     </>
   );

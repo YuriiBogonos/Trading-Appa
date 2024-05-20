@@ -2,18 +2,16 @@ import { useEffect, useState } from 'react';
 
 import { FormikTouched } from 'formik';
 
-import { NewTableData } from '@/components/HomeComponents/OpenTrades/OpenTrades.tsx';
+import { TradeRequest } from '@/api/OpenTrade/OpenTrade.ts';
 
-type NewTableDataKeys = keyof NewTableData;
+type NewTableDataKeys = keyof TradeRequest;
 export const useAllFieldsFilled = (
-  formikValues: NewTableData,
-  formikTouched: FormikTouched<NewTableData>,
-  initialValues: NewTableData,
+  formikValues: TradeRequest,
+  formikTouched: FormikTouched<TradeRequest>,
+  initialValues: TradeRequest,
   requiredFields: NewTableDataKeys[]
 ): boolean => {
-  console.log('asd', formikValues);
   const [allFieldsFilled, setAllFieldsFilled] = useState(false);
-
   useEffect(() => {
     setAllFieldsFilled(
       requiredFields.every(
