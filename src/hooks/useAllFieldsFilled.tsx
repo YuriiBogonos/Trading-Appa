@@ -2,8 +2,17 @@ import { useEffect, useState } from 'react';
 
 import { FormikTouched } from 'formik';
 
-import { TradeRequest } from '@/api/OpenTrade/OpenTrade.ts';
-
+export interface TradeRequest {
+  trader_id: number;
+  trade_pair: string;
+  order_type: string;
+  leverage: number;
+  asset_type: string;
+  stop_loss: number;
+  take_profit: number;
+  test_mode: boolean;
+  returnPercent?: number;
+}
 type NewTableDataKeys = keyof TradeRequest;
 export const useAllFieldsFilled = (
   formikValues: TradeRequest,
