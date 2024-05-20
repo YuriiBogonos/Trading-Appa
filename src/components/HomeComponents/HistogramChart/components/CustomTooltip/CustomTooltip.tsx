@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Checkpoint } from '@/types/types.ts';
+import { Root } from '@/types/types.ts';
 
 import '../../HistogramChartStyles.scss';
 
@@ -12,7 +12,7 @@ interface CustomTooltipProps {
   payload?: {
     payload: TooltipPayload;
   }[];
-  checkpointData: Checkpoint;
+  checkpointData: Root;
 }
 
 export const CustomTooltip: React.FC<CustomTooltipProps> = ({ payload, checkpointData }) => {
