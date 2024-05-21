@@ -3,6 +3,12 @@ import { IRoute } from '@/types/types.ts';
 
 const routes: IRoute[] = [
   {
+    key: 'login',
+    title: 'Login',
+    path: '/login',
+    component: Home,
+  },
+  {
     key: 'home',
     title: 'Home',
     path: '/',

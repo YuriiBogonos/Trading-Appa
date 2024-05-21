@@ -47,7 +47,16 @@ function Home() {
       <ValidationMetricField checkpointData={data} onValidHotkeyChange={handleValidHotkeyChange} />
       {isValidHotkey ? (
         <>
-          <MinerMetrics thirtyDayReturns={thirtyDayReturns} />
+          <MinerMetrics
+            thirtyDayReturns={thirtyDayReturns}
+            omega={data?.metrics?.omega?.[minerHotkey]}
+            omegaCps={data?.metrics?.omega_cps?.[minerHotkey]}
+            augmentedReturn={data?.metrics?.augmented_return?.[minerHotkey]}
+            sharpeRatio={data?.metrics?.sharpe_ratio?.[minerHotkey]}
+            probabilisticSharpeRatio={data?.metrics?.probabilistic_sharpe_ratio?.[minerHotkey]}
+            returnCps={data?.metrics?.return_cps?.[minerHotkey]}
+            invertedSortinoCps={data?.metrics?.inverted_sortino_cps?.[minerHotkey]}
+          />
           <OpenTrades checkpointData={data} minerHotkey={minerHotkey} />
           <CloseTrades checkpointData={data} minerHotkey={minerHotkey} />
           <div className='histogram-container'>

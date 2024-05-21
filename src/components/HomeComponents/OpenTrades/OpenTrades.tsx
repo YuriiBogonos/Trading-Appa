@@ -3,7 +3,7 @@ import React, { useMemo, useState } from 'react';
 import { FormikProps, useFormik } from 'formik';
 import * as yup from 'yup';
 
-import { Position, Root } from '@/types/types.ts';
+import { Root } from '@/types/types.ts';
 import { TradeRequest } from '@/types/types.ts';
 import AddIcon from '@mui/icons-material/Add';
 import IconButton from '@mui/material/IconButton';
@@ -21,6 +21,11 @@ interface IOpenTrades {
   minerHotkey: string;
   checkpointData: Root | undefined;
 }
+interface TradePairOption {
+  value: string;
+  label: string;
+}
+
 const TableCellInput = ({
   formik,
   fieldKey,
@@ -32,10 +37,14 @@ const TableCellInput = ({
 
   const handleLocalChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
-    const parsedValue =
-      fieldKey === 'leverage' || fieldKey === 'stop_loss' || fieldKey === 'take_profit'
-        ? parseFloat(value)
-        : value;
+    let parsedValue = parseFloat(value);
+
+    if (fieldKey === 'leverage') {
+      if (parsedValue < 0) {
+        parsedValue = 0;
+      }
+    }
+
     formik.setFieldValue(fieldKey, parsedValue);
   };
 
@@ -56,16 +65,29 @@ const TableCellInput = ({
 };
 
 const OpenTrades: React.FC<IOpenTrades> = ({ checkpointData, minerHotkey }) => {
-  console.log(checkpointData);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const [openTrade] = useOpenTradeMutation();
   const dispatch = useAppDispatch();
-  const filteredData = React.useMemo<any[]>(() => {
+  const tradePairOptions: TradePairOption[] = useMemo(() => {
+    const tradePairs = new Set<string>(); // Use a Set to avoid duplicates
+
+    // Loop through positions to extract and format trade pairs
+    if (checkpointData) {
+      Object.values(checkpointData.positions).forEach((positionData) => {
+        positionData.positions.forEach((position) => {
+          const formattedPair = `${position.trade_pair[1].replace(/USD$/, '/USD')}`; // Ensure format is like 'BTC/USD'
+          tradePairs.add(formattedPair);
+        });
+      });
+    }
+
+    return Array.from(tradePairs).map((pair) => ({ value: pair, label: pair }));
+  }, [checkpointData]);
+  const filteredData = React.useMemo(() => {
     if (!checkpointData) return [];
 
-    const minerPositions: Position[] = checkpointData.positions[minerHotkey]?.positions || [];
-
+    const minerPositions = checkpointData.positions[minerHotkey]?.positions || [];
     return minerPositions
       .filter((item) => !item.is_closed_position)
       .map((position) => ({
@@ -78,7 +100,7 @@ const OpenTrades: React.FC<IOpenTrades> = ({ checkpointData, minerHotkey }) => {
       }));
   }, [checkpointData, minerHotkey]);
 
-  const [data, setData] = useState<TradeRequest[]>([...filteredData]);
+  const [data, setData] = useState<any[]>([...filteredData]);
   const validationSchema = yup.object({
     trade_pair: yup.string().required('Pair is required'),
     order_type: yup.string().required('Position type is required'),
@@ -185,8 +207,11 @@ const OpenTrades: React.FC<IOpenTrades> = ({ checkpointData, minerHotkey }) => {
               className={`generated-input-select ${formik.errors.trade_pair && formik.touched.trade_pair ? 'error' : ''}`}
             >
               <option value=''>Select a pair</option>
-              <option value='BTCUSD'>BTC/USD</option>
-              <option value='ETHUSD'>ETH/USD</option>
+              {tradePairOptions.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
             </select>
           ) : (
             <span>{info.getValue()}</span>
@@ -276,7 +301,7 @@ const OpenTrades: React.FC<IOpenTrades> = ({ checkpointData, minerHotkey }) => {
                 className='exit'
                 onClick={() => console.log('Exiting position:', info.row.original)}
               >
-                Exit Position
+                Update Trade
               </button>
             )}
           </div>
