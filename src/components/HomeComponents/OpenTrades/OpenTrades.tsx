@@ -25,7 +25,6 @@ interface TradePairOption {
   value: string;
   label: string;
 }
-
 const TableCellInput = ({
   formik,
   fieldKey,
@@ -36,7 +35,8 @@ const TableCellInput = ({
   const [localValue, setLocalValue] = useState(String(formik.values[fieldKey]));
 
   const handleLocalChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setLocalValue(event.target.value);
+    const value = event.target.value;
+    setLocalValue(value);
   };
 
   const handleBlur = () => {
@@ -45,8 +45,28 @@ const TableCellInput = ({
       parsedValue = 0;
     }
     formik.setFieldValue(fieldKey, parsedValue);
+    setLocalValue(String(parsedValue));
     formik.handleBlur(fieldKey);
   };
+
+  let min, max;
+  switch (fieldKey) {
+    case 'take_profit':
+      min = 0;
+      max = 50;
+      break;
+    case 'stop_loss':
+      min = 0;
+      max = 9;
+      break;
+    case 'leverage':
+      min = 0.001;
+      max = 200;
+      break;
+    default:
+      min = 0;
+      max = Number.POSITIVE_INFINITY;
+  }
 
   return (
     <input
@@ -55,6 +75,8 @@ const TableCellInput = ({
       value={localValue}
       onChange={handleLocalChange}
       onBlur={handleBlur}
+      min={min}
+      max={max}
       className={`generated-input ${formik.errors[fieldKey] && formik.touched[fieldKey] ? 'error' : ''}`}
     />
   );

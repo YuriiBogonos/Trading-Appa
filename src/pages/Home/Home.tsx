@@ -17,6 +17,7 @@ function Home() {
   const [minerHotkey, setMinerHotkey] = useState<string>('');
 
   const { data, error, isLoading } = useFetchLinkQuery();
+  console.log(data);
   const handleValidHotkeyChange = (
     isValid: boolean,
     thirtyDayReturns?: number,
