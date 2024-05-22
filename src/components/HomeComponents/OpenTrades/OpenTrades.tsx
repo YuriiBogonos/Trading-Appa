@@ -33,22 +33,18 @@ const TableCellInput = ({
   formik: FormikProps<TradeRequest>;
   fieldKey: keyof TradeRequest;
 }) => {
-  const localValue = String(formik.values[fieldKey]);
+  const [localValue, setLocalValue] = useState(String(formik.values[fieldKey]));
 
   const handleLocalChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = event.target;
-    let parsedValue = parseFloat(value);
-
-    if (fieldKey === 'leverage') {
-      if (parsedValue < 0) {
-        parsedValue = 0;
-      }
-    }
-
-    formik.setFieldValue(fieldKey, parsedValue);
+    setLocalValue(event.target.value);
   };
 
   const handleBlur = () => {
+    let parsedValue = parseFloat(localValue);
+    if (isNaN(parsedValue)) {
+      parsedValue = 0;
+    }
+    formik.setFieldValue(fieldKey, parsedValue);
     formik.handleBlur(fieldKey);
   };
 
@@ -70,13 +66,12 @@ const OpenTrades: React.FC<IOpenTrades> = ({ checkpointData, minerHotkey }) => {
   const [openTrade] = useOpenTradeMutation();
   const dispatch = useAppDispatch();
   const tradePairOptions: TradePairOption[] = useMemo(() => {
-    const tradePairs = new Set<string>(); // Use a Set to avoid duplicates
+    const tradePairs = new Set<string>();
 
-    // Loop through positions to extract and format trade pairs
     if (checkpointData) {
       Object.values(checkpointData.positions).forEach((positionData) => {
         positionData.positions.forEach((position) => {
-          const formattedPair = `${position.trade_pair[1].replace(/USD$/, '/USD')}`; // Ensure format is like 'BTC/USD'
+          const formattedPair = `${position.trade_pair[1].replace(/USD$/, 'USD')}`;
           tradePairs.add(formattedPair);
         });
       });
