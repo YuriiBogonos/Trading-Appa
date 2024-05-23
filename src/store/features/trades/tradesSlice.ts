@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 export const tradeApi = createApi({
   reducerPath: 'tradeApi',
-  baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:8000/' }),
+  baseQuery: fetchBaseQuery({ baseUrl: 'http://34.253.69.53:8000/' }),
   endpoints: (builder) => ({
     openTrade: builder.mutation<TradeResponse, TradeRequest>({
       query: (tradeData) => ({
@@ -16,7 +16,6 @@ export const tradeApi = createApi({
       query: (sessionId) => ({
         url: `check-trade-status/${sessionId}`,
         method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
       }),
     }),
   }),

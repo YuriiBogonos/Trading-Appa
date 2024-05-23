@@ -139,14 +139,14 @@ const OpenTrades: React.FC<IOpenTrades> = ({ checkpointData, minerHotkey }) => {
   });
   const formik = useFormik<TradeRequest>({
     initialValues: {
-      trader_id: 4060,
+      trader_id: 4068,
       trade_pair: '',
       order_type: '',
       leverage: 0,
       asset_type: 'crypto',
       stop_loss: 0,
       take_profit: 0,
-      test_mode: true,
+      test_mode: false,
     },
     validationSchema,
     onSubmit: async (values, { resetForm }) => {
