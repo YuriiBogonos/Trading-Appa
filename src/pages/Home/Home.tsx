@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 import ThemeSwitcherButton from '@/components/ThemeSwitcherButton/ThemeSwitcherButton.tsx';
 
 import './Home.scss';
@@ -21,7 +23,9 @@ function Home() {
           </nav>
         </div>
         <div className='registration'>
-          <button>Register</button>
+          <Link to='/signup'>
+            <button>Register</button>
+          </Link>
         </div>
       </header>
       <hr />

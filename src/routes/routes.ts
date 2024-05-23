@@ -26,7 +26,7 @@ const routes: IRoute[] = [
   {
     key: 'home',
     title: 'Home',
-    path: '/',
+    path: '/home',
     component: Home,
   },
 ];
