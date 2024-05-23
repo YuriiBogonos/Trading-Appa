@@ -15,7 +15,7 @@ function Login() {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
-        navigate('/home');
+        navigate('/dashboard');
         console.log(user);
       })
       .catch((error) => {
