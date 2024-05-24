@@ -1,75 +1,58 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import { useState } from 'react';
 
 import { AuthService } from '../../services/AuthService.ts';
+import './SignUp.scss';
 
-const Signup = () => {
-  const authService = AuthService.getInstance();
-  const navigate = useNavigate();
+const SignupComponent = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [nickname, setNickname] = useState('');
-  const [error, setError] = useState('');
 
-  const handleSignUp = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setError('');
+  const signup = async () => {
     try {
+      const authService = AuthService.getInstance();
       await authService.signUp(email, password, nickname);
-      console.log('User created and saved successfully');
-      navigate('/');
-    } catch (error: any) {
-      setError(error.message || 'Failed to sign up');
-      console.error('Error signing up:', error);
+      alert('Email verification sent');
+      await authService.logout();
+      localStorage.setItem('userEmail', email); // Store email in localStorage
+    } catch (error) {
+      if (error instanceof Error) {
+        alert(error.message);
+      } else {
+        alert('An unknown error occurred');
+      }
     }
   };
 
   return (
-    <div>
-      <h1>Sign Up</h1>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      <form onSubmit={handleSignUp}>
-        <div>
-          <label htmlFor='nickname'>Nickname:</label>
-          <input
-            type='text'
-            id='nickname'
-            value={nickname}
-            onChange={(e) => setNickname(e.target.value)}
-            required
-            placeholder='Enter your nickname'
-          />
-        </div>
-        <div>
-          <label htmlFor='email'>Email:</label>
-          <input
-            type='email'
-            id='email'
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            placeholder='Enter your email'
-          />
-        </div>
-        <div>
-          <label htmlFor='password'>Password:</label>
-          <input
-            type='password'
-            id='password'
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            placeholder='Enter your password'
-          />
-        </div>
-        <button type='submit'>Sign Up</button>
-        <p>
-          Already have an account? <Link to='/login'>Sign in</Link>
-        </p>
-      </form>
+    <div className='signup'>
+      <label htmlFor='email'>Email</label>
+      <input
+        type='email'
+        id='email'
+        placeholder='Email'
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+      />
+      <label htmlFor='password'>Password</label>
+      <input
+        type='password'
+        id='password'
+        placeholder='Password'
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+      />
+      <label htmlFor='nickname'>Nickname</label>
+      <input
+        type='text'
+        id='nickname'
+        placeholder='Nickname'
+        value={nickname}
+        onChange={(e) => setNickname(e.target.value)}
+      />
+      <button onClick={signup}>Sign Up</button>
     </div>
   );
 };
 
-export default Signup;
+export default SignupComponent;
