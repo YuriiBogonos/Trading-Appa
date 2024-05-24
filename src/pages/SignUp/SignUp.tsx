@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { NavLink } from 'react-router-dom';
 
 import { AuthService } from '../../services/AuthService.ts';
 import './SignUp.scss';
@@ -51,6 +52,9 @@ const SignupComponent = () => {
         onChange={(e) => setNickname(e.target.value)}
       />
       <button onClick={signup}>Sign Up</button>
+      <p className='text-sm text-center'>
+        Already have an account? <NavLink to='/login'>Log in</NavLink>
+      </p>
     </div>
   );
 };
