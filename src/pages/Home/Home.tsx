@@ -30,7 +30,7 @@ function Home() {
         </div>
         <div className='registration'>
           <Link to='/signup'>
-            <button>Register</button>
+            <button>Register (Beta)</button>
           </Link>
         </div>
       </header>
