@@ -29,7 +29,7 @@ const SignupForm = () => {
       <div className='signup-title'>
         <p>Sign up</p>
         <div className='account'>
-          <span>Have you an account already?</span>
+          <span>Have an account already?</span>
           <NavLink to='/login'>Log in</NavLink>
         </div>
       </div>
