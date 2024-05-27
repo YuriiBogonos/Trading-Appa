@@ -1,6 +1,4 @@
-import { Link } from 'react-router-dom';
-
-import ThemeSwitcherButton from '@/components/ThemeSwitcherButton/ThemeSwitcherButton.tsx';
+import Header from '@/components/Header/Header.tsx';
 import { keyFeatures } from '@/pages/Home/components/KeyFeatures/keyFeatures.ts';
 import TradingNetworkDisplay from '@/pages/Home/components/TraidingNetworkBlock/TraidingNetwork.tsx';
 
@@ -14,26 +12,7 @@ import KeyFeatureCard from './components/KeyFeatures/KeyFeatures.tsx';
 function Home() {
   return (
     <div className='home'>
-      <header>
-        <div className='leftside-content'>
-          <p>Logo</p>
-          <ThemeSwitcherButton />
-        </div>
-        <div className='menu'>
-          <nav>
-            <ul>
-              <li>Key Features</li>
-              <li>Top miners</li>
-              <li>Menu item</li>
-            </ul>
-          </nav>
-        </div>
-        <div className='registration'>
-          <Link to='/signup'>
-            <button>Register (Beta)</button>
-          </Link>
-        </div>
-      </header>
+      <Header />
       <img
         style={{ position: 'absolute', top: '0', right: '3%', zIndex: 0 }}
         src={SecondBubble}

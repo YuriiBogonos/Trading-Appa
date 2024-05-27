@@ -1,12 +1,12 @@
 import SharedLayout from '@/components/AuthLayout/AuthLayout.tsx';
-import SignupForm from '@/components/SignUpForm/SignUpForm.tsx';
+import SignInForm from '@/components/SignInForm/SignInForm.tsx';
 
-import './SignUp.scss';
+import './SignIn.scss';
 
 const SignupPage = () => {
   return (
     <SharedLayout>
-      <SignupForm />
+      <SignInForm />
     </SharedLayout>
   );
 };
