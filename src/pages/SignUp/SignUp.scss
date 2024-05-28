@@ -77,3 +77,24 @@
   }
 
 }
+.day-theme .signup{
+  > label{
+    color: #151414;
+  }
+  > button{
+    background: #EA4927;
+
+  }
+  .signup-title {
+    > p{
+      color: #151414;
+
+    }
+    .account{
+      > span, a {
+        color: #151414;
+      }
+    }
+
+  }
+}

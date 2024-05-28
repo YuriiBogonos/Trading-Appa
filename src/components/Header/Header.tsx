@@ -14,9 +14,9 @@ function Header() {
       <div className='menu'>
         <nav>
           <ul>
-            <li>Key Features</li>
+            <li>How it Works</li>
             <li>Top Traders</li>
-            <li>Menu item</li>
+            <li>About us</li>
           </ul>
         </nav>
       </div>

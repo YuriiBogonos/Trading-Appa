@@ -83,3 +83,28 @@
 
   }
 }
+.day-theme .home {
+  background: #F7F6F3;
+
+}
+.day-theme .content {
+  .title{
+    > p {
+      color:  #444444;
+    ;
+    }
+    > span{
+      color: #444444;
+
+    }
+    > button {
+      background: #EA4927;
+
+    }
+  }
+}
+.day-theme .home{
+  .key-features{
+    background-image: url("../../images/featuresBackground/dayBackground.png");
+  }
+}

@@ -1,25 +1,101 @@
-.theme{
-    border: 1px solid rgba(62, 62, 62, 1);
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.04) 99.99%, rgba(153, 153, 153, 0.04) 100%);
-    box-shadow: 0px 2px 4px 0px rgba(255, 255, 255, 0.25);
-    border-radius: 3.1rem;
-    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
-    width: 6.1rem;
-    height: 2.75rem;
-  > p {
+.theme {
+  border: 1px solid rgba(62, 62, 62, 1);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04) 99.99%, rgba(153, 153, 153, 0.04) 100%);
+  box-shadow: 0px 2px 4px 0px rgba(255, 255, 255, 0.25);
+  border-radius: 3.1rem;
+  width: 6.1rem;
+  height: 2.75rem;
+  padding: 0 0.5rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  position: relative;
+
+  .icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    background-size: contain;
+    background-repeat: no-repeat;
+    transition: transform 0.5s ease, background-image 0.5s ease;
+    top: 3px;
+    position: absolute;
+    z-index: 2;
+  }
+
+  .icon-day {
+    background-image: url('../../images/ThemeIcons/day.svg');
+  }
+
+  .icon-night {
+    background-image: url('../../images/ThemeIcons/night.svg');
+  }
+
+  .theme-text {
     color: white;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    position: relative;
+    z-index: 1;
+    font-family: Satoshi, sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 20.25px;
+  }
+
+  &.day .icon {
+    transform: translateX(120%);
+
+  }
+
+  &.night .icon {
+    transform: translateX(-15%);
+  }
+
+  &.day .theme-text {
+    opacity: 1;
+    transform: translateX(0);
+    color: #444444;
+
+  }
+
+  &.night .theme-text {
+    opacity: 1;
+    text-align: right;
+    transform: translateX(0);
+
   }
 }
-.padding-night{
-  color: white;
-  padding-right: 13px;
-  text-align: left;
-}
-.padding-day{
-  color: white;
-  padding-right: 18px;
+
+.padding-night {
   text-align: right;
+  opacity: 0;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  > p {
+    font-family: Satoshi, sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 20.25px;
+  }
 }
 
+.padding-day {
+  text-align: left;
+  opacity: 0;
+  transition: opacity 0.5s ease, transform 0.5s ease;
 
+}
 
+.theme.night .padding-night {
+  opacity: 1;
+  margin-right: 10px;
+}
+
+.theme.day .padding-day {
+  opacity: 1;
+  margin-left: 10px;
+}
+
+.theme.day{
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04) 99.99%, rgba(153, 153, 153, 0.04) 100%);
+  border: 1px solid #EFEEEB;
+  box-shadow: 0px 4px 4px 0px #00000040 inset;
+
+}

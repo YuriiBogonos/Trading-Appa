@@ -1,9 +1,7 @@
 .shared-layout-wrapper {
-  background-image: url("../../images/Circles.svg");
-  background-repeat: no-repeat;
-  background-position: center;
-  border: 2px solid;
   background-position-y: 490px;
+  background: #151414 url("../../images/Circles.svg") no-repeat center;
+
 }
 
 .form-container {
@@ -15,4 +13,11 @@
   max-width: 33.4rem;
   margin: 7.5rem auto 25rem;
   z-index: 1;
+}
+.day-theme .shared-layout-wrapper{
+  background-color: #F7F6F3;
+  background-image: url("../../images/Circles.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-position-y: 490px;
 }

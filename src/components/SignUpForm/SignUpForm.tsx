@@ -7,8 +7,13 @@ const SignupForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [nickname, setNickname] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
 
   const signup = async () => {
+    if (password !== confirmPassword) {
+      alert('Passwords do not match');
+      return;
+    }
     try {
       const authService = AuthService.getInstance();
       await authService.signUp(email, password, nickname);
@@ -48,6 +53,13 @@ const SignupForm = () => {
         id='password'
         value={password}
         onChange={(e) => setPassword(e.target.value)}
+      />
+      <label htmlFor='confirm-password'>Confirm Password</label>{' '}
+      <input
+        type='password'
+        id='confirm-password'
+        value={confirmPassword}
+        onChange={(e) => setConfirmPassword(e.target.value)}
       />
       <button onClick={signup}>Submit</button>
     </div>

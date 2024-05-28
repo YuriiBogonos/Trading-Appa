@@ -27,7 +27,7 @@ const SignInForm = () => {
 
   return (
     <div className='login'>
-      <div className='signup-title'>
+      <div className='signin-title'>
         <p>Log in</p>
         <div className='account'>
           <span>Still not a member?</span>

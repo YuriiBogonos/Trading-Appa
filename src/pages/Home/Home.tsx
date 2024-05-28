@@ -35,21 +35,21 @@ function Home() {
           <div className='title'>
             <p>Delta De-Fi's TaoshiTrader</p>
             <span>Register - Trade - Earn Rewards Daily</span>
-            <button>EXPLORE NOW</button>
+            <button>SIGN UP</button>
           </div>
         </div>
         <div>
           <TradingNetworkDisplay />
         </div>
-        <h2 className='keyfeatures-title'>Key Features</h2>
+        <h2 className='keyfeatures-title'>How it Works</h2>
         <div className='key-features'>
           {keyFeatures.map((feature, index) => (
             <KeyFeatureCard
               key={index}
               title={feature.title}
               content={feature.content}
-              description={feature.description}
               metrics={feature.metrics}
+              link={feature.link}
             />
           ))}
         </div>

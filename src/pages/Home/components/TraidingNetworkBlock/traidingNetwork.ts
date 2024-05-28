@@ -1,9 +1,9 @@
 export const tradingNetworkData = {
   intro: 'Powered by the innovative Bittensor neural network.',
   title:
-    'The Subnet 8, Proprietary Trade Network is a revolutionary AI based trading network, where Traders compete against one another for rewards.',
+    'Register and compete in the Taoshi proprietary trading competition built on the Bittensor neural network',
   details: [
-    "Trading in Forex, Crypto and Indices, the PTN is open for traditional 'Hand Traders' or AI Data Scientists skilled in Time Series Forecasting.",
-    'Toashi Trader provides the tools you need to be successful in the PTN and earn your share of the more than USD $60,000 in rewards given to traders every day.',
+    'Trading Forex, Crypto and Indices - TaoshiTrader welcomes both expereienced Hand Traders and AI Developers to put their skills to the test.',
+    "ToashiTrader provides registration, trading dashboard and smart trade prompts generated from Delta De-Fi's signal to help Traders compete and earn higher rewards.  80:20 - Trader and TaoshiTrader  rewards split.",
   ],
 };

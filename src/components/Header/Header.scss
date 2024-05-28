@@ -9,6 +9,8 @@ header{
 
   .leftside-content{
     display: flex;
+    align-items: center;
+    gap: 15px;
   }
   .registration {
     border: 1px solid #EA4927;
@@ -33,6 +35,7 @@ header{
       list-style: none;
       display: flex;
       gap: 1.75rem;
+      justify-content: center;
       > li {
         color: #F7F6F3;
         font-family: Roboto Mono, sans-serif;
@@ -45,4 +48,16 @@ header{
     }
   }
 
+}
+
+.day-theme .registration {
+  > a > button{
+    color: #444444;
+
+  }
+}
+.day-theme .menu{
+  nav > ul > li{
+    color: #444444;
+  }
 }
