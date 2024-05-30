@@ -1,5 +1,6 @@
 import Header from '@/components/Header/Header.tsx';
 import { keyFeatures } from '@/pages/Home/components/KeyFeatures/keyFeatures.ts';
+import MinerDashboard from '@/pages/Home/components/MinerDashboard/MinerDashboard.tsx';
 import TradingNetworkDisplay from '@/pages/Home/components/TraidingNetworkBlock/TraidingNetwork.tsx';
 
 import FirstBubble from '../../images/BackgroundFigures/First.svg';
@@ -52,6 +53,10 @@ function Home() {
               link={feature.link}
             />
           ))}
+        </div>
+        <div className='home-dashboard'>
+          <div className='home-dashboard-title'>Trader Dashboard</div>
+          <MinerDashboard />
         </div>
       </div>
     </div>

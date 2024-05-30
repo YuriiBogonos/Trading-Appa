@@ -1,0 +1,26 @@
+@mixin FormInput{
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04) 99.99%, rgba(153, 153, 153, 0.04) 100%);
+  box-shadow: 0 4px 4px 0 #00000040 inset;
+  border-radius: 3.1rem;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  color: #98979D;
+}
+@mixin FormLabel{
+  font-family: Satoshi, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 21.6px;
+  color: #E9E9E9;
+  margin-bottom: 0.25rem;
+}
+@mixin FormButton{
+  font-family: Roboto Mono, sans-serif;
+  font-size: 20px;
+  font-weight: 300;
+  line-height: 26.38px;
+  color: #F7F6F3;
+  border: none;
+  padding: 1rem;
+  text-transform: uppercase;
+}

@@ -53,6 +53,9 @@ const SignInForm = () => {
           placeholder='Password'
           onChange={(e) => setPassword(e.target.value)}
         />
+        <div className='forgot-password'>
+          <NavLink to='/reset/email-validation'>Forgot Password?</NavLink>
+        </div>
         <button onClick={onLogin}>Submit</button>
       </form>
     </div>

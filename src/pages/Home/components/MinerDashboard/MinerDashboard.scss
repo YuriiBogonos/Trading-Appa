@@ -1,0 +1,39 @@
+.dashboard {
+  background-color: #1e1e1e;
+  padding: 20px;
+  border-radius: 8px;
+  color: #ffffff;
+
+  .custom-tooltip {
+    background: rgba(0, 0, 0, 0.75);
+    border: 1px solid #fff;
+    border-radius: 5px;
+    padding: 10px;
+    color: #fff;
+
+    p {
+      margin: 0;
+    }
+  }
+
+  .recharts-tooltip-wrapper {
+    outline: none;
+  }
+
+  .recharts-bar-rectangle {
+    rx: 5px;
+    ry: 5px;
+  }
+
+  .recharts-cartesian-axis-line {
+    stroke: #666;
+  }
+
+  .recharts-cartesian-axis-tick-line {
+    stroke: #666;
+  }
+
+  .recharts-cartesian-axis-tick-value {
+    fill: #999;
+  }
+}

@@ -18,12 +18,12 @@ const VerifyEmail = () => {
       try {
         if (actionCode) {
           await applyActionCode(auth, actionCode);
-          const email = localStorage.getItem('userEmail'); // Retrieve email from localStorage
+          const email = localStorage.getItem('userEmail');
           if (email) {
             const authService = AuthService.getInstance();
             const userData = await authService.getUserByEmail(email);
             if (userData) {
-              const userId = Object.keys(userData)[0]; // Assuming email is unique and fetching the first match
+              const userId = Object.keys(userData)[0];
 
               await authService.verifyUser(userId);
               localStorage.removeItem('userEmail');

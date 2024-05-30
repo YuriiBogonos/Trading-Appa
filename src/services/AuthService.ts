@@ -2,6 +2,8 @@ import {
   Auth,
   UserCredential,
   createUserWithEmailAndPassword,
+  confirmPasswordReset as firebaseConfirmPasswordReset,
+  sendPasswordResetEmail as firebaseSendPasswordResetEmail,
   sendEmailVerification,
   signInWithEmailAndPassword,
   signOut,
@@ -33,7 +35,7 @@ export class AuthService {
     await set(ref(this.db, `users/${user.uid}`), {
       email,
       nickname,
-      isVerified: false, // Set isVerified to false
+      isVerified: false,
     });
     await sendEmailVerification(user);
     return userCredential;
@@ -68,5 +70,29 @@ export class AuthService {
       return snapshot.val();
     }
     return null;
+  }
+
+  async confirmPasswordReset(oobCode: string, newPassword: string): Promise<void> {
+    try {
+      await firebaseConfirmPasswordReset(this.auth, oobCode, newPassword);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        throw new Error(`Failed to reset password: ${error.message}`);
+      } else {
+        throw new Error('Failed to reset password due to an unknown error.');
+      }
+    }
+  }
+
+  async sendPasswordResetEmail(email: string): Promise<void> {
+    try {
+      await firebaseSendPasswordResetEmail(this.auth, email);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        throw new Error(`Failed to send password reset email: ${error.message}`);
+      } else {
+        throw new Error('Failed to send password reset email due to an unknown error.');
+      }
+    }
   }
 }

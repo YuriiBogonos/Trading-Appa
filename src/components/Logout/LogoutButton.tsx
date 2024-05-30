@@ -11,7 +11,7 @@ const LogoutButton = () => {
     try {
       await signOut(auth);
       console.log('User logged out successfully');
-      navigate('/login'); // Redirect to the login page or home page as appropriate
+      navigate('/login');
     } catch (error) {
       console.error('Failed to log out:', error);
     }
