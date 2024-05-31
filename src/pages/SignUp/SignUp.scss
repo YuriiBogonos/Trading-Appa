@@ -16,33 +16,38 @@
   max-width: 33.4rem;
   margin: 7.5rem auto 25rem;
   z-index: 1;
-  label{
-    font-family: Satoshi, sans-serif;
-    font-size: 16px;
-    font-weight: 400;
-    line-height: 21.6px;
-    color: #E9E9E9;
-    margin-bottom: 0.25rem;
+  > form {
+    display: flex;
+    flex-direction: column;
+    > label{
+      font-family: Satoshi, sans-serif;
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 21.6px;
+      color: #E9E9E9;
+      margin-bottom: 0.25rem;
+    }
+    > input {
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.04) 99.99%, rgba(153, 153, 153, 0.04) 100%);
+      box-shadow: 0 4px 4px 0 #00000040 inset;
+      border-radius: 3.1rem;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+      color: #98979D;
+    }
+      button{
+      background: #000000;
+      font-family: Roboto Mono, sans-serif;
+      font-size: 20px;
+      font-weight: 300;
+      line-height: 26.38px;
+      color: #F7F6F3;
+      border: none;
+      padding: 1rem;
+      text-transform: uppercase;
+    }
   }
-  input{
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.04) 99.99%, rgba(153, 153, 153, 0.04) 100%);
-    box-shadow: 0 4px 4px 0 #00000040 inset;
-    border-radius: 3.1rem;
-    padding: 1rem;
-    margin-bottom: 1.5rem;
-    color: #98979D;
-  }
-  button{
-    background: #000000;
-    font-family: Roboto Mono, sans-serif;
-    font-size: 20px;
-    font-weight: 300;
-    line-height: 26.38px;
-    color: #F7F6F3;
-    border: none;
-    padding: 1rem;
-    text-transform: uppercase;
-  }
+
 }
 .signup-title{
   text-align: center;
@@ -95,5 +100,123 @@
       }
     }
 
+  }
+}
+.input-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+
+  label {
+    font-family: Satoshi, sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 21.6px;
+    color: #E9E9E9;
+    margin-bottom: 0.25rem;
+  }
+
+  input {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.04) 99.99%, rgba(153, 153, 153, 0.04) 100%);
+    box-shadow: 0 4px 4px 0 #00000040 inset;
+    border-radius: 3.1rem;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    color: #98979D;
+    position: relative;
+  }
+
+  .check-icon {
+    position: absolute;
+    top: 50%;
+    right: 1rem;
+    transform: translateY(-50%);
+    display: block;
+    width: 20px;
+    height: 20px;
+  }
+
+  .eye-icon {
+    position: absolute;
+    top: 50%;
+    right: 1rem;
+    transform: translateY(-50%);
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+  }
+}
+.error {
+  color: red;
+  font-family: Satoshi, sans-serif;
+  font-size: 14px;
+  margin-top: -1rem;
+  margin-bottom: 1rem;
+}
+.disclaimer-content{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60px 48px;
+  > h2{
+    font-family: Satoshi, sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 32.4px;
+    letter-spacing: -0.03em;
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+  > p {
+    font-family: Roboto Mono, sans-serif;
+    font-size: 20px;
+    font-weight: 300;
+    line-height: 26.38px;
+    text-align: left;
+    margin-bottom: 24px;
+    color: #444444;
+
+
+  }
+  .disclaimer-actions{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+    > button{
+      background: #EA4927;
+      max-width: 12rem;
+      width: 100%;
+
+    }
+    .disclaimer-checkbox{
+      > label{
+        font-family: Satoshi, sans-serif;
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 21.6px;
+        > a {
+          font-family: Satoshi, sans-serif;
+          font-size: 16px;
+          font-weight: 400;
+          line-height: 21.6px;
+          color: #EA4927;
+        }
+      }
+
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+    }
+  }
+}
+.disclaimer-checkbox{
+  input[type="checkbox"]{
+    min-width: 20px;
+    min-height: 20px;
+  }
+  input[type="checkbox"]:enabled{
+    accent-color:  #EA4927;
   }
 }

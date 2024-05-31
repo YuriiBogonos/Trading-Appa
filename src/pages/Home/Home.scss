@@ -1,5 +1,6 @@
+@import '../../mixins/mixins';
 .home{
-    font-family: 'Satoshi', sans-serif;
+  font-family: 'Satoshi', sans-serif;
   background: #151414 no-repeat;
 
   .home-content{
@@ -9,7 +10,26 @@
     background-position: top;
   }
 
+  .register-button{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 25.8rem;
+    width: 100%;
+    gap: 1.5rem;
+    margin: 0 auto 9.3rem;
 
+    > button{
+      background: #EA4927;
+      max-width: 14.5rem;
+      width: 100%;
+      @include FormButton;
+    }
+    > span{
+      @include FormLabel;
+      text-align: center;
+    }
+  }
   .content{
     margin: 21.25rem auto;
 
@@ -53,7 +73,7 @@
       padding: 20px 0;
       background-position: top;
       background-repeat: no-repeat;
-      margin: 0 auto;
+      margin: 0 auto 3.5rem;
   }
   .key-features .card:nth-child(1) {
     grid-area: 1 / 1 / 1 / 3;

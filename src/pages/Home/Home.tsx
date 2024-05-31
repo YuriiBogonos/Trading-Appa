@@ -1,3 +1,5 @@
+import { useNavigate } from 'react-router-dom';
+
 import Header from '@/components/Header/Header.tsx';
 import { keyFeatures } from '@/pages/Home/components/KeyFeatures/keyFeatures.ts';
 import MinerDashboard from '@/pages/Home/components/MinerDashboard/MinerDashboard.tsx';
@@ -11,6 +13,10 @@ import './Home.scss';
 import KeyFeatureCard from './components/KeyFeatures/KeyFeatures.tsx';
 
 function Home() {
+  const navigate = useNavigate();
+  const handleRegisterClick = () => {
+    navigate('/signup');
+  };
   return (
     <div className='home'>
       <Header />
@@ -53,6 +59,12 @@ function Home() {
               link={feature.link}
             />
           ))}
+        </div>
+        <div className='register-button'>
+          <button onClick={handleRegisterClick}>Register now</button>
+          <span>
+            Registration includes access to our V1 SignalBot boasting a 76% Win/Loss rate*
+          </span>
         </div>
         <div className='home-dashboard'>
           <div className='home-dashboard-title'>Trader Dashboard</div>

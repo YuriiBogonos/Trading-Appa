@@ -11,6 +11,8 @@
 
 .card:hover {
   transform: scale(1.05);
+  box-shadow: 0 2px 4px 0 #EA4927;
+
 }
 
 .card-icon {
@@ -53,4 +55,9 @@
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.04) 99.99%, rgba(153, 153, 153, 0.04) 100%);
   border: 1px solid #EFEEEB;
   box-shadow: 0px 2px 4px 0px #CFCFCF;
+}
+
+.day-theme .card:hover{
+  box-shadow: 0 2px 4px 0 #EA4927;
+
 }

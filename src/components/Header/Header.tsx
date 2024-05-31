@@ -1,10 +1,14 @@
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import ThemeSwitcherButton from '@/components/ThemeSwitcherButton/ThemeSwitcherButton.tsx';
 
 import './Header.scss';
 
 function Header() {
+  const navigate = useNavigate();
+  const handleRouteToSignUp = () => {
+    navigate('/signup');
+  };
   return (
     <header>
       <div className='leftside-content'>
@@ -21,9 +25,7 @@ function Header() {
         </nav>
       </div>
       <div className='registration'>
-        <Link to='/signup'>
-          <button>Register (Beta)</button>
-        </Link>
+        <button onClick={handleRouteToSignUp}>Register (Beta)</button>
       </div>
     </header>
   );

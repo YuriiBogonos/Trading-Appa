@@ -14,7 +14,7 @@ header{
   }
   .registration {
     border: 1px solid #EA4927;
-    > a > button{
+    > button{
       font-family: Roboto Mono, serif;
       font-size: 20px;
       font-weight: 300;
@@ -24,8 +24,16 @@ header{
       border: none;
       text-transform: uppercase;
       padding: 16px 48px;
+      transition: background-color 0.3s ease;
+    }
+    > button:hover{
+      background-color: #EA4927;
+    }
+    > button:active{
+      background-color: #EA4927;
     }
   }
+
 }
 .menu{
   > nav {

@@ -95,4 +95,10 @@ export class AuthService {
       }
     }
   }
+
+  async emailExists(email: string): Promise<boolean> {
+    const userRef = query(ref(this.db, 'users'), orderByChild('email'), equalTo(email));
+    const snapshot = await get(userRef);
+    return snapshot.exists();
+  }
 }
