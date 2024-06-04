@@ -37,8 +37,8 @@ header{
 }
 .menu{
   > nav {
-    width: 23rem;
-    max-width: 23rem;
+    width: 42rem;
+    max-width: 42rem;
     > ul{
       list-style: none;
       display: flex;
@@ -58,7 +58,7 @@ header{
 }
 
 .day-theme .registration {
-  > a > button{
+   > button{
     color: #444444;
   }
 }

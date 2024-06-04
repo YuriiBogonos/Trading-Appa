@@ -19,8 +19,9 @@ function Header() {
         <nav>
           <ul>
             <li>How it Works</li>
-            <li>Top Traders</li>
+            <li>Trader Dashboard</li>
             <li>About us</li>
+            <li>Competition Rules and FAQ </li>
           </ul>
         </nav>
       </div>

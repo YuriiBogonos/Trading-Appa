@@ -80,6 +80,12 @@
 
 }
 .day-theme .login {
+  .forgot-password{
+    > a {
+    color: #3E3E3E;
+
+    }
+  }
   button{
     background: #EA4927;
   }
@@ -100,6 +106,5 @@
         color: #151414;
       }
     }
-
   }
 }

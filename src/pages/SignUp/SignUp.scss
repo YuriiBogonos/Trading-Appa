@@ -220,3 +220,18 @@
     accent-color:  #EA4927;
   }
 }
+.day-theme .signup {
+  .input-wrapper{
+    > label{
+      color: #3E3E3E;
+    }
+  }
+  > form{
+    > button {
+      background: #EA4927;
+    }
+    > label{
+      color: #3E3E3E;
+    }
+  }
+}

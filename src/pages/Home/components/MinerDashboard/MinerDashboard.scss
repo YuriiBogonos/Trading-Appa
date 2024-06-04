@@ -1,9 +1,8 @@
 .dashboard {
-  background-color: #1e1e1e;
   padding: 20px;
   border-radius: 8px;
   color: #ffffff;
-
+  width: 100%;
   .custom-tooltip {
     background: rgba(0, 0, 0, 0.75);
     border: 1px solid #fff;
@@ -35,5 +34,15 @@
 
   .recharts-cartesian-axis-tick-value {
     fill: #999;
+  }
+}
+
+.day-theme .dashboard{
+  .axisy{
+    fill: #444444;
+  ;
+  }
+  .axisx{
+    fill: #444444;
   }
 }

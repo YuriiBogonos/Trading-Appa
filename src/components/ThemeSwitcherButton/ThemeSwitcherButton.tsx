@@ -11,7 +11,7 @@ function ThemeSwitcherButton() {
   const toggleTheme = () => {
     setIsNight((prevIsNight: boolean) => {
       const newIsNight = !prevIsNight;
-      localStorage.setItem('isNight', JSON.stringify(newIsNight)); // Save theme preference to local storage
+      localStorage.setItem('isNight', JSON.stringify(newIsNight));
       return newIsNight;
     });
     document.body.classList.toggle('night-theme', !isNight);

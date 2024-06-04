@@ -2,6 +2,7 @@
   display: flex;
   justify-content: space-between;
   margin-bottom: 9.3rem;
+  position: relative;
 }
 .trading-content{
   width: 44rem;
@@ -31,6 +32,7 @@
     flex:1;
     width: 19.5rem;
     max-width: 19.5rem;
+    white-space: pre-wrap;
   }
 }
 .intro{

@@ -1,40 +1,62 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import AuthLayout from '@/components/AuthLayout/AuthLayout.tsx';
+import PasswordStrengthMeter from '@/pages/ConfirmPasswordReset/components/PasswordStrenghtMeter/PasswordStrenghtMeter.tsx';
 
-import { AuthService } from '../../services/AuthService.ts';
+import { AuthService } from '../../services/AuthService';
+import PasswordComplexityService from '../../services/PasswordComplexityService';
 import './ConfirmPasswordReset.scss';
 
-const ResetPassword = () => {
+const ResetPassword: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [newPassword, setNewPassword] = useState('');
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
+  const [passwordErrors, setPasswordErrors] = useState({
+    length: '',
+    uppercase: '',
+    lowercase: '',
+    number: '',
+    specialChar: '',
+  });
 
-  const onResetPassword = async (e: { preventDefault: () => void }) => {
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setNewPassword(e.target.value);
+  };
+
+  const validatePassword = (password: string) => {
+    const errors = PasswordComplexityService.validatePassword(password);
+    setPasswordErrors(errors);
+    return Object.values(errors).some((error) => error);
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setMessage('');
     setError('');
+
+    if (validatePassword(newPassword)) return;
+
     const queryParams = new URLSearchParams(location.search);
     const oobCode = queryParams.get('oobCode');
 
-    if (oobCode) {
-      try {
-        await AuthService.getInstance().confirmPasswordReset(oobCode, newPassword);
-        setMessage('Password has been reset successfully.');
-        navigate('/login');
-      } catch (error: unknown) {
-        if (error instanceof Error) {
-          console.log(error.message);
-          setError(error.message);
-        } else {
-          setError('An unknown error occurred.');
-        }
-      }
-    } else {
+    if (!oobCode) {
       setError('Invalid or expired reset link.');
+      return;
+    }
+
+    try {
+      await AuthService.getInstance().confirmPasswordReset(oobCode, newPassword);
+      setMessage('Password has been reset successfully.');
+      navigate('/login');
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError('An unknown error occurred.');
+      }
     }
   };
 
@@ -42,7 +64,7 @@ const ResetPassword = () => {
     <AuthLayout>
       <div className='reset-password'>
         <h2>Enter New Password</h2>
-        <form>
+        <form onSubmit={handleSubmit}>
           <label htmlFor='new-password'>New Password</label>
           <input
             id='new-password'
@@ -50,9 +72,18 @@ const ResetPassword = () => {
             type='password'
             required
             placeholder='New Password'
-            onChange={(e) => setNewPassword(e.target.value)}
+            onChange={handlePasswordChange}
           />
-          <button onClick={onResetPassword}>Reset Password</button>
+          <PasswordStrengthMeter password={newPassword} />
+          {Object.values(passwordErrors).map(
+            (error, index) =>
+              error && (
+                <p key={index} style={{ color: 'red' }}>
+                  {error}
+                </p>
+              )
+          )}
+          <button type='submit'>Reset Password</button>
         </form>
         {message && <p>{message}</p>}
         {error && <p style={{ color: 'red' }}>{error}</p>}

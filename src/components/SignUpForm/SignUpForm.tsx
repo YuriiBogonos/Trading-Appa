@@ -4,7 +4,8 @@ import { NavLink } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
-import DeclaimerModal from '../../DeclaimerModal/DeclaimerModal.tsx';
+import DeclaimerModal from '@/components/DeclaimerModal/DeclaimerModal.tsx';
+
 import CheckIcon from '../../images/EmailCheck.svg';
 import HidePasswordIcon from '../../images/HidePassword.svg';
 import ShowPasswordIcon from '../../images/ShowPassword.svg';
@@ -17,8 +18,10 @@ const SignupForm = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
 
   const validationSchema = Yup.object({
-    email: Yup.string().email('Invalid email address').required('Required'),
-    password: Yup.string().min(6, 'Password must be at least 6 characters').required('Required'),
+    email: Yup.string().email('Invalid email address').required('This field must be filled in'),
+    password: Yup.string()
+      .min(6, 'Password must be at least 6 characters')
+      .required('This field must be filled in'),
     confirmPassword: Yup.string()
       .oneOf([Yup.ref('password'), undefined], 'Passwords must match')
       .required('Required'),
