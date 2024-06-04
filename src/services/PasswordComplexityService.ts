@@ -44,12 +44,11 @@ class PasswordComplexityService {
   static getStrengthLabel(strength: number): string {
     switch (strength) {
       case 0:
-        return PasswordStrength.WEAK;
       case 1:
+        return PasswordStrength.WEAK;
       case 2:
-      case 3:
         return PasswordStrength.FAIR;
-      case 4:
+      case 3:
         return PasswordStrength.GOOD;
       default:
         return '';

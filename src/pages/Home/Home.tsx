@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 
 import AboutUs from '@/components/AboutUs/AboutUs.tsx';
 import KeyFeatureCard from '@/components/FeaturesCard/FeaturesCard.tsx';
+import Footer from '@/components/Footer/Footer.tsx';
 import Header from '@/components/Header/Header.tsx';
 import MinerDashboard from '@/pages/Home/components/MinerDashboard/MinerDashboard.tsx';
 import TradingNetworkDisplay from '@/pages/Home/components/TraidingNetworkBlock/TraidingNetwork.tsx';
@@ -110,6 +111,7 @@ function Home() {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 }

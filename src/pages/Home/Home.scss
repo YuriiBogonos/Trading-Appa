@@ -58,12 +58,15 @@
       }
       > button{
         padding: 16px 48px;
-        background: #000000;
+        background-color: #000000;
         @include FormButton;
         max-width: 14rem;
         width: 100%;
       }
-
+      > button:hover{
+        transition: background-color 0.3s ease;
+        background-color: #EA4927;
+      }
     }
 
   }
@@ -189,7 +192,8 @@
   padding: 0 14rem;
   max-width: 65.5rem;
   width: 100%;
-  margin: 0 auto;
+  margin: 0 auto 5rem;
+
   > p{
     font-family: Roboto Mono, sans-serif;
     font-size: 20px;

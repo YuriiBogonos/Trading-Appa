@@ -16,8 +16,9 @@ const MinerDashboard: React.FC = () => {
   );
   return (
     <div className='dashboard'>
+      <div className='tao'>Tao</div>
       <ResponsiveContainer width='100%' height={400}>
-        <BarChart data={data} barSize={15} barCategoryGap={16} barGap={8}>
+        <BarChart data={data} barSize={15} barCategoryGap={100} barGap={8}>
           {referenceLinePositions.map((position, index) => (
             <ReferenceLine key={index} x={data[position]?.miner} stroke='#FFFFFF0F' />
           ))}
@@ -32,19 +33,7 @@ const MinerDashboard: React.FC = () => {
             }}
             tick={false}
           />
-          <YAxis
-            label={{
-              value: 'Tao',
-              angle: -90,
-              position: 'insideLeft',
-              offset: 1,
-              fill: '#fff',
-              className: 'axisy',
-            }}
-            axisLine={false}
-            tickLine={false}
-            tickMargin={15}
-          />
+          <YAxis axisLine={false} tickLine={false} tickMargin={15} />
 
           <Tooltip content={<CustomTooltip />} cursor={<CustomCursor />} />
           <Bar dataKey='tao' shape={<CustomizedBar />} />

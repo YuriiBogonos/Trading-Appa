@@ -1,5 +1,6 @@
-import LinkedIn from '../../images/FooterIcons/LinkedIn.svg';
-import Twitter from '../../images/FooterIcons/Twitter.svg';
+import LinkedInIcon from '@/components/icons/LinkedIn';
+import TwitterIcon from '@/components/icons/Twitter';
+
 import './Footer.scss';
 
 const Footer = () => {
@@ -9,13 +10,13 @@ const Footer = () => {
       <div className='footer-content'>
         <div className='social-icons'>
           <a href='https://twitter.com' target='_blank' rel='noopener noreferrer'>
-            <img src={Twitter} alt='twitterIcon' />
+            <TwitterIcon />
           </a>
           <a href='https://linkedin.com' target='_blank' rel='noopener noreferrer'>
-            <img src={LinkedIn} alt='linkedinIcon' />
+            <LinkedInIcon />
           </a>
         </div>
-        <p>@TaoshiTrader {currentYear}</p>
+        <p>@Delta De-Fi's TaoshiTrader {currentYear}</p>
       </div>
     </footer>
   );
