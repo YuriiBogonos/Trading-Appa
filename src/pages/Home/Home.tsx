@@ -1,3 +1,4 @@
+import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import AboutUs from '@/components/AboutUs/AboutUs.tsx';
@@ -8,13 +9,16 @@ import MinerDashboard from '@/pages/Home/components/MinerDashboard/MinerDashboar
 import TradingNetworkDisplay from '@/pages/Home/components/TraidingNetworkBlock/TraidingNetwork.tsx';
 import { keyFeatures } from '@/pages/Home/components/keyFeatures.ts';
 
+import DarkBottom from '../../images/BackgroundFigures/DarkBottom.png';
 import FirstBubble from '../../images/BackgroundFigures/First.svg';
 import FourBubble from '../../images/BackgroundFigures/Four.svg';
+import LightBottom from '../../images/BackgroundFigures/LightBottom.png';
 import SecondBubble from '../../images/BackgroundFigures/Second.svg';
 import ThirdBubble from '../../images/BackgroundFigures/Third.svg';
 import Bittensor from '../../images/Banner/Bittensor.svg';
 import DeltaIcon from '../../images/Banner/DeltaDeFi.svg';
 import TaoshiIcon from '../../images/Banner/Taoshi.svg';
+import { ThemeContext } from '../../providers/ThemeProvider.tsx';
 import './Home.scss';
 
 function Home() {
@@ -22,6 +26,8 @@ function Home() {
   const handleRegisterClick = () => {
     navigate('/signup');
   };
+
+  const { isNight } = useContext(ThemeContext);
   return (
     <div className='home'>
       <Header />
@@ -34,12 +40,12 @@ function Home() {
       <div className='home-content'>
         <div className='content'>
           <img
-            style={{ position: 'absolute', top: '90%', left: '21%' }}
+            style={{ position: 'absolute', top: '12%', left: '22%' }}
             src={FirstBubble}
             alt='icon'
           />
           <img
-            style={{ position: 'absolute', top: '80%', right: '20%' }}
+            style={{ position: 'absolute', top: '12%', left: '63%' }}
             src={FourBubble}
             alt='icon'
           />
@@ -51,7 +57,7 @@ function Home() {
           <div className='title'>
             <p>Delta De-Fi's TaoshiTrader</p>
             <span>Register - Trade - Earn Rewards Daily</span>
-            <button>SIGN UP</button>
+            <button onClick={handleRegisterClick}>SIGN UP</button>
           </div>
         </div>
         <div>
@@ -75,21 +81,24 @@ function Home() {
             Registration includes access to our V1 SignalBot boasting a 76% Win/Loss rate*
           </span>
         </div>
-        <div className='home-dashboard-title'>Trader Dashboard</div>
+        <div className='home-dashboard-title'>Trader Earnings</div>
 
         <div className='home-dashboard'>
           <div className='home-dashboard-banner'>
-            <p>Integration with Trader View</p>
             <p>
-              USD <span className='price'>$175,000</span> Total Daily Reward Distribution
+              USD <span className='price'>$80,000</span> in Total Daily Rewards
             </p>
             <p>
-              <span className='price'>$2,900</span> avg Daily per Trader
+              <span className='price'>&gt;$8,000</span> paid out daily to Top Trader
+            </p>
+            <p>
+              <span>*variable based on competition and TAO/USD</span>
             </p>
           </div>
 
           <MinerDashboard />
         </div>
+
         <div className='aboutus'>
           <h2 className='features-title'>About Us</h2>
           <AboutUs />
@@ -104,7 +113,7 @@ function Home() {
             signals designed to maximize your trading profits.
           </p>
           <div className='ready-join'>
-            <button>JOIN US NOW</button>
+            <button onClick={handleRegisterClick}>JOIN US NOW</button>
             <span>
               Registration includes access to our V1 SignalBot boasting a 76% Win/Loss rate*
             </span>
@@ -112,6 +121,11 @@ function Home() {
         </div>
       </div>
       <Footer />
+      <img
+        src={isNight ? DarkBottom : LightBottom}
+        style={{ position: 'absolute', right: '0', bottom: '0' }}
+        alt='bottom'
+      />
     </div>
   );
 }

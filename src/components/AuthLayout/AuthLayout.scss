@@ -1,6 +1,7 @@
 .shared-layout-wrapper {
-  background-position-y: 490px;
   background: #151414 url("../../images/Circles.svg") no-repeat center;
+  background-position-y: 490px;
+  position: relative;
 }
 
 .form-container {
@@ -10,7 +11,7 @@
   justify-content: center;
   width: 33.4rem;
   max-width: 33.4rem;
-  margin: 7.5rem auto 25rem;
+  margin: 7.5rem auto 10rem;
   z-index: 1;
 }
 .day-theme .shared-layout-wrapper{

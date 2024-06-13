@@ -18,7 +18,13 @@ const MinerDashboard: React.FC = () => {
     <div className='dashboard'>
       <div className='tao'>Tao</div>
       <ResponsiveContainer width='100%' height={400}>
-        <BarChart data={data} barSize={15} barCategoryGap={100} barGap={8}>
+        <BarChart
+          data={data}
+          barSize={15}
+          barCategoryGap={100}
+          barGap={8}
+          margin={{ top: 20, right: 20, left: 20, bottom: 20 }}
+        >
           {referenceLinePositions.map((position, index) => (
             <ReferenceLine key={index} x={data[position]?.miner} stroke='#FFFFFF0F' />
           ))}

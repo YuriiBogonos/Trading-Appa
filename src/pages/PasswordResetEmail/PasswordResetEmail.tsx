@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import AuthLayout from '@/components/AuthLayout/AuthLayout.tsx';
 
@@ -8,18 +9,23 @@ import './PasswordResetEmail.scss';
 const PasswordResetRequest = () => {
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
   const authService = AuthService.getInstance();
 
-  const onResetPassword = async (e: { preventDefault: () => void }) => {
+  const onResetPassword = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setMessage('');
+    setError('');
     try {
       await authService.sendPasswordResetEmail(email);
-      setMessage('Password reset email sent! Please check your inbox.');
-    } catch (error) {
+      setMessage('Verification code sent! Please check your inbox.');
+      navigate('/reset/code', { state: { email } });
+    } catch (error: unknown) {
       if (error instanceof Error) {
-        setMessage('Error sending password reset email: ' + error.message);
+        setError('Error sending verification code: ' + error.message);
       } else {
-        setMessage('Error sending password reset email due to an unknown error.');
+        setError('Error sending verification code due to an unknown error.');
       }
     }
   };
@@ -44,6 +50,7 @@ const PasswordResetRequest = () => {
           <button type='submit'>Submit</button>
         </form>
         {message && <p>{message}</p>}
+        {error && <p style={{ color: 'red' }}>{error}</p>}
       </div>
     </AuthLayout>
   );

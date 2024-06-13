@@ -6,6 +6,15 @@ export interface IRoute {
   path: string;
   component: ComponentType;
 }
+export interface PasswordHintsProps {
+  passwordErrors: {
+    uppercase: string | null;
+    lowercase: string | null;
+    number: string | null;
+    specialChar: string | null;
+    length: string | null;
+  };
+}
 
 export interface Root {
   challengeperiod_miners: string[];

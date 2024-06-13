@@ -1,3 +1,4 @@
+@import '../../../../mixins/mixins';
 .trading-network{
   display: flex;
   justify-content: space-between;
@@ -12,20 +13,12 @@
   gap: 1.4rem;
 }
 .title{
-  font-family: Satoshi, sans-serif;
-  font-size: 32px;
-  font-weight: 500;
-  line-height: 43.2px;
-  color: #E9E9E9;
   display: flex;
   margin-bottom: 2.5rem;
+  @include font-style(Satoshi, 32px, 500,  43.2px, #E9E9E9);
 }
 .details{
-  font-family: Roboto Mono, sans-serif;
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 21.1px;
-  color: #F7F6F3;
+  @include font-style(Roboto Mono, 16px, 400,  21.1px, #F7F6F3);
   display: flex;
   gap: 24px;
   > p {
@@ -36,11 +29,7 @@
   }
 }
 .intro{
-  font-family: Roboto Mono, sans-serif;
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 21.1px;
-  color: #F7F6F3;
+  @include font-style(Roboto Mono, 16px, 400,  21.1px, #F7F6F3);
   max-width: 18rem;
 }
 

@@ -1,3 +1,4 @@
+@import '../../mixins/mixins.scss';
 header{
   position: relative;
   z-index: 1;
@@ -10,24 +11,19 @@ header{
   .leftside-content{
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 44px;
   }
   .registration {
     border: 1px solid #EA4927;
     > button{
-      font-family: Roboto Mono, serif;
-      font-size: 20px;
-      font-weight: 300;
-      line-height: 26.38px;
+      @include FormButton;
       background-color: inherit;
-      color: white;
-      border: none;
-      text-transform: uppercase;
       padding: 16px 48px;
       transition: background-color 0.3s ease;
     }
     > button:hover{
       background-color: #EA4927;
+      color: white;
     }
     > button:active{
       background-color: #EA4927;
@@ -45,11 +41,7 @@ header{
       gap: 1.75rem;
       justify-content: center;
       > li {
-        color: #F7F6F3;
-        font-family: Roboto Mono, sans-serif;
-        font-size: 16px;
-        font-weight: 300;
-        line-height: 21.1px;
+        @include font-style( Roboto Mono, 16px, 300, 21.1px,  #F7F6F3);
         text-align: left;
       }
     }
@@ -58,9 +50,11 @@ header{
 }
 
 .day-theme .registration {
-   > button{
-    color: #444444;
+  >button{
+  color: #444444;
+
   }
+
 }
 .day-theme .menu{
   nav > ul > li{

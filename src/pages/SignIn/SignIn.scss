@@ -1,10 +1,24 @@
 @import "../../mixins/mixins";
+.shared-layout-wrapper{
+  background-position-y: 290px;
+}
 .login {
   width: 33.4rem;
   max-width: 33.4rem;
-  margin: 7.5rem auto 25rem;
+  max-height: 30rem;
+  height: 100%;
   z-index: 1;
+  .success-message{
+    @include flex-center;
+    border-radius: 12px;
+    padding: 5px;
+    background: #FFFFFF;
+    margin-bottom: 3rem;
+    > p {
+      @include font-style(Montserrat, 16px, 500, 24px, #272727);
+    }
 
+  }
   form{
     display: flex;
     position: relative;
@@ -17,64 +31,48 @@
   }
   input {
     @include FormInput;
+    margin-bottom: 1.5rem;
+    color:  #98979D;
   }
-
+  input:focus-visible{
+    outline: none;
+  }
   button {
-    background: #000000;
+    background-color: #000000;
     @include FormButton;
+  }
+  button:hover{
+    transition: background-color 0.35s ease;
+    background-color: #EA4927;
   }
   .text-sm {
     text-align: center;
     margin-top: 1rem;
-    font-family: Roboto Mono, sans-serif;
-    font-size: 16px;
-    font-weight: 400;
-    line-height: 21.1px;
-    color: #F7F6F3;
+    @include font-style(Roboto Mono, 16px, 400, 21.1px, #F7F6F3);
   }
 }
 .account{
-  display: flex;
-  justify-content: center;
+  @include flex-center;
   gap: 1rem;
   margin-bottom: 3.1rem;
-  > span{
-    font-family: Roboto Mono, sans-serif;
-    font-size: 16px;
-    font-weight: 400;
-    line-height: 21.1px;
-    color: #F7F6F3;
+  > span {
+    @include font-style(Roboto Mono, 16px, 400, 21.1px, #F7F6F3);
   }
   > a {
-    font-family: Satoshi,sans-serif;
-    font-size: 16px;
-    font-weight: 700;
-    line-height: 21.6px;
-    color: #F7F6F3;
+    @include font-style(Satoshi, 16px, 700, 21.6px, #F7F6F3);
   }
 }
 .signin-title{
   text-align: center;
   > p {
-    font-family: Satoshi, sans-serif;
-    font-size: 64px;
-    font-weight: 500;
-    line-height: 86.4px;
-    color: #F7F6F3;
+    @include font-style(Satoshi, 64px, 500, 86.4px, #F7F6F3);
     margin-bottom: 1rem;
-
   }
-
-
 }
 .forgot-password{
   margin-bottom: 3rem;
   > a {
-    font-family: Roboto Mono, sans-serif;
-    font-size: 16px;
-    font-weight: 400;
-    line-height: 21.1px;
-    color: white;
+    @include font-style(Roboto Mono, 16px, 400, 21.1px, white);
     text-decoration: none;
   }
 
@@ -82,17 +80,21 @@
 .day-theme .login {
   .forgot-password{
     > a {
-    color: #3E3E3E;
-
+      color: #3E3E3E;
     }
   }
   button{
     background: #EA4927;
   }
+  button:hover{
+    box-shadow: inset 0 0 1px 1px black;
+  }
   > form {
     > label{
       color: #3E3E3E;
-
+    }
+    input{
+      border: 1px solid #EFEEEB;
     }
 
   }

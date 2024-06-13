@@ -1,22 +1,10 @@
-import { useState } from 'react';
+import React, { useContext } from 'react';
 
+import { ThemeContext } from '../../providers/ThemeProvider.tsx';
 import './ThemeSwitcherButton.scss';
 
-function ThemeSwitcherButton() {
-  const [isNight, setIsNight] = useState(() => {
-    const savedTheme = localStorage.getItem('isNight');
-    return savedTheme ? JSON.parse(savedTheme) : false;
-  });
-
-  const toggleTheme = () => {
-    setIsNight((prevIsNight: boolean) => {
-      const newIsNight = !prevIsNight;
-      localStorage.setItem('isNight', JSON.stringify(newIsNight));
-      return newIsNight;
-    });
-    document.body.classList.toggle('night-theme', !isNight);
-    document.body.classList.toggle('day-theme', isNight);
-  };
+const ThemeSwitcherButton: React.FC = () => {
+  const { isNight, toggleTheme } = useContext(ThemeContext);
 
   return (
     <button className={`theme ${isNight ? 'night' : 'day'}`} onClick={toggleTheme}>
@@ -30,6 +18,6 @@ function ThemeSwitcherButton() {
       </p>
     </button>
   );
-}
+};
 
 export default ThemeSwitcherButton;

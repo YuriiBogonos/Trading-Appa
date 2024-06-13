@@ -1,3 +1,4 @@
+import CheckEmailPasswordCode from '@/pages/CheckEmailPasswordCode/CheckEmailPasswordCode.tsx';
 import ConfirmPasswordReset from '@/pages/ConfirmPasswordReset/ConfirmPasswordReset.tsx';
 import Dashboard from '@/pages/Dashboard/Dashboard.tsx';
 import Home from '@/pages/Home/Home.tsx';
@@ -57,6 +58,12 @@ const routes: IRoute[] = [
     title: 'action',
     path: 'action',
     component: ActionHandler,
+  },
+  {
+    key: 'code',
+    title: 'code',
+    path: '/reset/code',
+    component: CheckEmailPasswordCode,
   },
 ];
 

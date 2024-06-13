@@ -1,7 +1,12 @@
+import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 import ThemeSwitcherButton from '@/components/ThemeSwitcherButton/ThemeSwitcherButton.tsx';
 
+import DarkLogo from '../../images/Logo/DarkLogo.svg';
+import LightLogo from '../../images/Logo/LightLogo.svg';
+import { ThemeContext } from '../../providers/ThemeProvider.tsx';
 import './Header.scss';
 
 function Header() {
@@ -9,17 +14,20 @@ function Header() {
   const handleRouteToSignUp = () => {
     navigate('/signup');
   };
+  const { isNight } = useContext(ThemeContext);
   return (
     <header>
       <div className='leftside-content'>
-        <p>Logo</p>
+        <NavLink to='/home'>
+          <img src={isNight ? DarkLogo : LightLogo} alt='logo' />
+        </NavLink>
         <ThemeSwitcherButton />
       </div>
       <div className='menu'>
         <nav>
           <ul>
             <li>How it Works</li>
-            <li>Trader Dashboard</li>
+            <li>Trader Earnings</li>
             <li>About us</li>
             <li>Competition Rules and FAQ </li>
           </ul>

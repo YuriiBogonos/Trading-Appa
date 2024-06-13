@@ -1,28 +1,39 @@
-import { useState } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 
-import { signInWithEmailAndPassword } from 'firebase/auth';
-
-import { auth } from '../../../firebase.ts';
+import HidePasswordIcon from '../../images/HidePassword.svg';
+import CheckIcon from '../../images/PasswordSuccessChanged/Check.svg';
+import ShowPasswordIcon from '../../images/ShowPassword.svg';
+import { AuthService } from '../../services/AuthService.ts';
 
 const SignInForm = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { passwordResetSuccess } = location.state || { passwordResetSuccess: false };
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [passwordVisible, setPasswordVisible] = useState(false); // Add this state
+  const [error, setError] = useState('');
 
-  const onLogin = (e: { preventDefault: () => void }) => {
+  const togglePasswordVisibility = () => {
+    setPasswordVisible(!passwordVisible);
+  };
+
+  const onLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        navigate('/dashboard');
-        console.log(user);
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorCode, errorMessage);
-      });
+    setError('');
+
+    try {
+      const authService = AuthService.getInstance();
+      await authService.login(email, password);
+      navigate('/dashboard');
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError('An unknown error occurred.');
+      }
+    }
   };
 
   return (
@@ -34,7 +45,13 @@ const SignInForm = () => {
           <NavLink to='/signup'>Register</NavLink>
         </div>
       </div>
-      <form>
+      {passwordResetSuccess && (
+        <div className='success-message'>
+          <img src={CheckIcon} alt='check' />
+          <p>Password successfully recovered!</p>
+        </div>
+      )}
+      <form onSubmit={onLogin}>
         <label htmlFor='email-address'>Email</label>
         <input
           id='email'
@@ -42,21 +59,32 @@ const SignInForm = () => {
           type='email'
           required
           placeholder='Email'
+          value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
         <label htmlFor='password'>Password</label>
-        <input
-          id='password'
-          name='password'
-          type='password'
-          required
-          placeholder='Password'
-          onChange={(e) => setPassword(e.target.value)}
-        />
+        <div className='input-wrapper'>
+          <input
+            id='password'
+            name='password'
+            type={passwordVisible ? 'text' : 'password'}
+            required
+            placeholder='Password'
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <img
+            src={passwordVisible ? HidePasswordIcon : ShowPasswordIcon}
+            alt='toggle password visibility'
+            className='eye-icon'
+            onClick={togglePasswordVisibility}
+          />
+        </div>
         <div className='forgot-password'>
           <NavLink to='/reset/email-validation'>Forgot Password?</NavLink>
         </div>
-        <button onClick={onLogin}>Submit</button>
+        {error && <p style={{ color: 'red' }}>{error}</p>}
+        <button type='submit'>Submit</button>
       </form>
     </div>
   );

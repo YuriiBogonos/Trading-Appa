@@ -7,7 +7,7 @@ import { AuthService } from '../../services/AuthService.ts';
 
 const VerifyEmail = () => {
   const location = useLocation();
-  const navigate = useNavigate(); // Initialize the useNavigate hook
+  const navigate = useNavigate();
   const query = new URLSearchParams(location.search);
   const actionCode = query.get('oobCode');
   const auth = getAuth();
@@ -28,7 +28,7 @@ const VerifyEmail = () => {
               await authService.verifyUser(userId);
               localStorage.removeItem('userEmail');
               setMessage('Email verified successfully. You can now log in.');
-              navigate('/login'); // Redirect to the login page immediately
+              navigate('/login');
             } else {
               setMessage('No user found with this email');
             }

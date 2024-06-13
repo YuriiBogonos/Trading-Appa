@@ -1,11 +1,11 @@
 @mixin FormInput{
+  box-shadow: 0px 2px 4px 0px #00000040 inset;
+  border: 1px solid #3E3E3E;
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.04) 99.99%, rgba(153, 153, 153, 0.04) 100%);
-  box-shadow: 0 4px 4px 0 #00000040 inset;
-  border-radius: 3.1rem;
-  padding: 1rem;
-  margin-bottom: 1.5rem;
-  color: #98979D;
+  padding: 14px;
+  border-radius: 50px;
 }
+
 @mixin FormLabel{
   font-family: Satoshi, sans-serif;
   font-size: 16px;
@@ -23,4 +23,35 @@
   border: none;
   padding: 1rem;
   text-transform: uppercase;
+}
+
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+@mixin font-style($font-family, $font-size, $font-weight, $line-height, $color: null) {
+  font-family: $font-family;
+  font-size: $font-size;
+  font-weight: $font-weight;
+  line-height: $line-height;
+  @if $color {
+    color: $color;
+  }
+}
+@mixin error-style {
+  color: red;
+  font-family: Satoshi, sans-serif;
+  font-size: 14px;
+  margin-bottom: 1rem;
+}
+@mixin input-wrapper-style {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+@mixin background-image($url, $repeat: no-repeat, $position: center) {
+  background-image: url($url);
+  background-repeat: $repeat;
+  background-position: $position;
 }
