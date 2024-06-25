@@ -1,0 +1,85 @@
+@import '../../../../mixins/mixins';
+
+.for-traders {
+  margin-bottom: 9.375rem;
+  > h2 {
+    @include font-style(Satoshi, 32px, 700, 43.2px, white);
+    margin-bottom: 2rem;
+  }
+
+  .trade-pairs {
+    display: flex;
+    flex-direction: column;
+    max-width: 54.375rem;
+    width: 100%;
+    > label {
+      @include font-style(Satoshi, 20px, 700, 27px, white);
+      margin-bottom: 1.5rem;
+    }
+
+    .custom-dropdown {
+      position: relative;
+      max-width: 23.438rem;
+      width: 100%;
+      padding: 32px 8px;
+      border-bottom: 1px solid #FF4E27;
+      background-color: white;
+      cursor: pointer;
+
+      .selected-option {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 1em;
+        @include font-style(Satoshi, 20px, 700, 27px, black);
+      }
+
+      .options {
+        position: absolute;
+        top: calc(100% + 4px);
+        left: 0;
+        right: 0;
+        background-color: white;
+        border: 1px solid #ccc;
+        border-radius: 0 0 40px 40px;
+        z-index: 10;
+        max-height: 200px;
+        overflow-y: auto;
+
+        .option {
+          padding: 10px;
+          cursor: pointer;
+          border-bottom: 1px solid #ccc;
+          text-align: center;
+          @include font-style(Satoshi, 20px, 500, 27px, black);
+
+          &:hover {
+            background-color: #f0f0f0;
+          }
+
+          &.default-option {
+            @include font-style(Satoshi, 20px, 500, 27px, black);
+          }
+
+          &:last-child {
+            border-bottom: none;
+          }
+        }
+      }
+
+      .arrow {
+        font-size: 0.8em;
+      }
+    }
+  }
+}
+.day-theme .for-traders{
+  > h2{
+    color: black;
+  }
+  .trade-pairs{
+    > label{
+      color: black;
+    }
+  }
+}

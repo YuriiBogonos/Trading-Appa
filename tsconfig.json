@@ -12,7 +12,8 @@
       "@/pages/*": ["./pages/*"],
       "@/api/*": ["./api/*"],
       "@/redux/*": ["./redux/*"],
-      "@/types/*": ["./types/*"]
+      "@/types/*": ["./types/*"],
+      "@/images/*" : ["./images/*"]
     },
 
     /* Bundler mode */

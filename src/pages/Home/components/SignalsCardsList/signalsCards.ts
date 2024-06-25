@@ -1,36 +1,51 @@
-import CopyTradingIcon from 'path/to/CopyTradingIcon.svg';
-import DeFiVaultIcon from 'path/to/DeFiVaultIcon.svg';
-import ManagedAccountIcon from 'path/to/ManagedAccountIcon.svg';
-import SignalV2Icon from 'path/to/SignalV2Icon.svg';
+import React from 'react';
 
-export const signalsCards = [
+import Telegram from '@/components/icons/Telegram.tsx';
+import CopyTraiding from '@/images/featuresCards/CopyTraiding.svg';
+import DefiVault from '@/images/featuresCards/DefiVault.svg';
+import Fund from '@/images/featuresCards/Fund.svg';
+import ManageAccount from '@/images/featuresCards/ManageAccount.svg';
+import SignalV2 from '@/images/featuresCards/SignalV2.svg';
+
+interface SignalCard {
+  title: string;
+  content: string;
+  linkText: string;
+  link: string;
+  icon: string;
+  buttonIcon?: React.ComponentType<any> | string;
+}
+export const signalsCards: SignalCard[] = [
   {
     title: 'Signal V2',
     content:
       "Individual trade weights will be augmented by Delta's proprietary Time Series Forecasting models, adding sentiment data for risk downside volatility.",
     linkText: 'SUBSCRIBE',
     link: '/subscribe',
-    icon: SignalV2Icon,
+    icon: SignalV2,
+    buttonIcon: Telegram,
   },
   {
     title: 'Separately Managed Account',
     content: 'Access a dedicated fund managed by Delta using our signals. Clients deposit fiat.',
     linkText: 'REQUEST INFO',
     link: '/request-info',
-    icon: ManagedAccountIcon,
+    icon: ManageAccount,
   },
   {
     title: 'Fund the De-Fi Vault',
     content: 'Connect your wallet and fund the vault via smart contract.',
     linkText: 'FUND NOW',
     link: '/fund-now',
-    icon: DeFiVaultIcon,
+    icon: DefiVault,
+    buttonIcon: Fund,
   },
   {
     title: 'Copy Trading',
     content: 'Connect to our copy trading profile and let Delta manage your account.',
     linkText: 'COMING SOON',
     link: '#',
-    icon: CopyTradingIcon,
+    icon: CopyTraiding,
+    buttonIcon: CopyTraiding,
   },
 ];

@@ -2,7 +2,10 @@ import CheckEmailPasswordCode from '@/pages/CheckEmailPasswordCode/CheckEmailPas
 import ConfirmPasswordReset from '@/pages/ConfirmPasswordReset/ConfirmPasswordReset.tsx';
 import Dashboard from '@/pages/Dashboard/Dashboard.tsx';
 import Home from '@/pages/Home/Home.tsx';
+import NewTradePosition from '@/pages/NewTradePosition/NewTradePosition.tsx';
 import PasswordResetEmail from '@/pages/PasswordResetEmail/PasswordResetEmail.tsx';
+import Rules from '@/pages/Rules/Rules.tsx';
+import SecondStepVerification from '@/pages/SecondStepVerification/SecondStepVerification.tsx';
 import SingIn from '@/pages/SignIn/SingIn.tsx';
 import SignUp from '@/pages/SignUp/SignUp.tsx';
 import VerifyEmail from '@/pages/VerifyEmail/VerifyEmail.tsx';
@@ -64,6 +67,24 @@ const routes: IRoute[] = [
     title: 'code',
     path: '/reset/code',
     component: CheckEmailPasswordCode,
+  },
+  {
+    key: 'faq',
+    title: 'FAq',
+    path: 'faq',
+    component: Rules,
+  },
+  {
+    key: 'email-message',
+    title: 'EmailMessage',
+    path: '/email-message',
+    component: SecondStepVerification,
+  },
+  {
+    key: 'new-position',
+    title: 'New Trade Position',
+    path: '/new-position',
+    component: NewTradePosition,
   },
 ];
 

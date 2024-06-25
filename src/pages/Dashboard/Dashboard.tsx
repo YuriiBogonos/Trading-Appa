@@ -9,7 +9,7 @@ import ValidationMetricField from '@/components/HomeComponents/ValidationMetricF
 import LogoutButton from '@/components/Logout/LogoutButton.tsx';
 import { CircularProgress } from '@mui/material';
 
-import { useFetchLinkQuery } from '../../store/features/taoshiApi/taoshiApi.ts';
+import { useFetchValidatorQuery } from '../../store/features/taoshiApi/validatorAndStatisticsApi.ts';
 import './Dashboard.scss';
 
 function Dashboard() {
@@ -17,8 +17,7 @@ function Dashboard() {
   const [thirtyDayReturns, setThirtyDayReturns] = useState<number | undefined>(undefined);
   const [minerHotkey, setMinerHotkey] = useState<string>('');
 
-  const { data, error, isLoading } = useFetchLinkQuery();
-  console.log(data);
+  const { data, error, isLoading } = useFetchValidatorQuery();
   const handleValidHotkeyChange = (
     isValid: boolean,
     thirtyDayReturns?: number,

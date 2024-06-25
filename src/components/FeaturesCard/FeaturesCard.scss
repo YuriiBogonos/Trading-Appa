@@ -1,16 +1,56 @@
 @import '../../mixins/mixins';
 .card {
+  display: flex;
+  flex-direction: column;
   color: white;
   border-radius: 10px;
-  padding: 20px;
+  padding: 32px;
   transition: transform 0.3s;
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.04) 99.99%, rgba(153, 153, 153, 0.04) 100%);
   border: 1px solid #3E3E3E;
   box-shadow: 0 2px 4px 0 #FFFFFF40;
   min-height: 16.5rem;
   height: 100%;
-}
 
+}
+.card-button-soon{
+  > button{
+    @include FormButton;
+    width: 100%;
+    max-width: 19.375rem;
+    background-color: inherit;
+    color: #EA4927;
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    align-items: center;
+  }
+
+}
+.card-button{
+  flex:1;
+  display: flex;
+  max-height: 58px;
+  height: 100%;
+  > button{
+      @include FormButton;
+      width: 100%;
+      max-width: 19.375rem;
+      border: 1px solid #EA4927;
+      background-color: inherit;
+      color: #F7F4F3;
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+.card-button:hover{
+    > button{
+      background: #EA4927;
+      color: #FFFFFF;
+    }
+}
 .card:hover {
   transform: scale(1.05);
   box-shadow: 0 2px 4px 0 #EA4927;
@@ -22,21 +62,25 @@
   margin-bottom: 1.8rem;
   margin-top: 1.5rem;
 }
-
+.signal-icon{
+  margin-bottom: 24px;
+  margin-top: 0;
+}
 .card-title {
-  margin-bottom: 1.5rem;
-  font-size: 25px;
-  font-weight: 700;
-  line-height: 33.75px;
+  @include font-style(Satoshi, 25px, 700, 33.75px, #F7F4F3);
   letter-spacing: -0.03em;
+  margin-bottom: 1.5rem;
   cursor: pointer;
 }
 
 .card-content {
+  display: flex;
+  flex-direction: column;
   @include font-style(Roboto Mono, 16px, 400, 21.1px, #F7F6F3);
   > p {
     margin-bottom: 8px;
   }
+
 }
 
 .card ul li {
@@ -46,17 +90,26 @@
   background: url("../../images/listIcons/ListIcons.svg") no-repeat left center;
   padding-left: 30px;
 }
-.day-theme .card-title, .day-theme .card-content, .day-theme .card ul li{
+.day-theme .card-content,  .day-theme .card ul li{
   color: #444444;
 }
-
+.day-theme .card-title{
+  color: #444444;
+}
 .day-theme .card{
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.04) 99.99%, rgba(153, 153, 153, 0.04) 100%);
   border: 1px solid #EFEEEB;
-  box-shadow: 0px 2px 4px 0px #CFCFCF;
+  box-shadow: 0 2px 4px 0 #CFCFCF;
 }
 
 .day-theme .card:hover{
   box-shadow: 0 2px 4px 0 #EA4927;
-
+}
+.day-theme .card-button{
+  > button{
+    color: #444444;
+  }
+  button:hover{
+    color: #FFFFFF;
+  }
 }

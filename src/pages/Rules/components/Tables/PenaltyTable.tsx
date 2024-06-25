@@ -2,6 +2,8 @@ import React from 'react';
 
 import CustomTable from '@/pages/Rules/components/Tables/CustomTable/CustomTable.tsx';
 
+import './PenaltyTable.scss';
+
 const columns = [
   {
     header: 'MDD',

@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import ThemeSwitcherButton from '@/components/ThemeSwitcherButton/ThemeSwitcherButton.tsx';
 
@@ -29,7 +30,9 @@ function Header() {
             <li>How it Works</li>
             <li>Trader Earnings</li>
             <li>About us</li>
-            <li>Competition Rules and FAQ </li>
+            <li>
+              <Link to='/faq'>Competition Rules and FAQ</Link>
+            </li>
           </ul>
         </nav>
       </div>

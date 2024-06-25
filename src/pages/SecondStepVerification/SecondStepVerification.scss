@@ -1,0 +1,26 @@
+@import '../../mixins/mixins';
+.step{
+  text-align: center;
+  max-width: 44.188rem;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  > h1 {
+    @include font-style(Satoshi, 64px, 500, 86.4px, #151414);
+    margin-bottom: 1rem;
+  }
+
+}
+.step-email{
+  @include font-style(Roboto Mono, 16px, 400, 21.1px, #151414);
+  margin-bottom: 1rem;
+}
+.step-message{
+  max-width: 34.75rem;
+  width: 100%;
+  > span{
+    @include font-style(Roboto Mono, 16px, 400, 21.1px, #151414);
+  }
+}

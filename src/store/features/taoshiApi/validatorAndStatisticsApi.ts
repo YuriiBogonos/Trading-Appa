@@ -19,7 +19,7 @@ export const validatorApi = createApi({
       query: () => ({
         url: '/statistics',
         headers: {
-          'x-statistics-request-key': 'req_3Zntc9v2x8nCnqwYBUeBHdft',
+          'x-taoshi-consumer-request-key': 'req_3Zntc9v2x8nCnqwYBUeBHdft',
         },
       }),
     }),

@@ -40,9 +40,10 @@ header{
       display: flex;
       gap: 1.75rem;
       justify-content: center;
-      > li {
+      > li, li > a {
         @include font-style( Roboto Mono, 16px, 300, 21.1px,  #F7F6F3);
         text-align: left;
+        text-decoration: none;
       }
     }
   }
@@ -57,7 +58,7 @@ header{
 
 }
 .day-theme .menu{
-  nav > ul > li{
+  nav > ul > li, li > a{
     color: #444444;
   }
 }

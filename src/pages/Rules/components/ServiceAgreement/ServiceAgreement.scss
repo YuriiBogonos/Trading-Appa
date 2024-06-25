@@ -1,0 +1,11 @@
+@import '../../../../mixins/mixins';
+.service-agreement{
+  @include font-style(Satoshi,16px,400, 20.8px, #F7F4F3);
+}
+.custom-unordered-list{
+  list-style: disc;
+  margin-left: 15px;
+}
+.day-theme .service-agreement{
+  color: #000000;
+}

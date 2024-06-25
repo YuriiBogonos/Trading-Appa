@@ -1,0 +1,33 @@
+@import '../../mixins/mixins';
+.rules-title{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5rem;
+  margin-top: 4.6rem;
+  > h1{
+    @include font-style(Satoshi, 48px, 500, 64.8px, white);
+  }
+  > span{
+    @include font-style(Roboto Mono, 16px, 400, 21.1px, #444444);
+  }
+}
+.rules-content{
+  display: flex;
+  gap: 8.125rem;
+  justify-content: center;
+  .rules-list{
+    max-width: 54.375rem;
+    width: 100%;
+    @include font-style(Satoshi,16px, 400, 20.8px);
+  }
+  .sidebar{
+    max-width: 15.938rem;
+    width: 100%;
+  }
+}
+.day-theme .rules-title{
+  > h1{
+    color: black;
+  }
+}

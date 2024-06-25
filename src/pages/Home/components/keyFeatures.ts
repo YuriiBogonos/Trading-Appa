@@ -1,29 +1,41 @@
+import CardIcon from '../../../images/CardIcon/CardIcon.svg';
+import BlockchainIcon from '../../../images/featuresCards/BlockchainIcon.svg';
+import MultipleRegister from '../../../images/featuresCards/MultipleRegister.svg';
+import PerformingIcon from '../../../images/featuresCards/PerfomingIcon.svg';
+import RegisterIcon from '../../../images/featuresCards/RegisterIcon.svg';
+import TraderEarningIcon from '../../../images/featuresCards/TradeEarningIcon.svg';
+
 export const keyFeatures = [
   {
     title: 'Register',
-    content:
-      'Registration cost is currently $2,500 and varies based on demand for capped 256 active Trader spots.',
+    content: 'Register and become a ranking trader to receive payouts daily.',
     link: '/signup',
+    icon: RegisterIcon,
   },
   {
-    title: 'Challenge Period',
-    content:
-      'Each miner has 30 days to pass the Challenge Period before he can start receiving rewards.',
-    metrics: ['Time Avg Sortino > -1.5E-8', 'Omega Ratio > 1.0015', 'Return > 3.25%'],
+    title: 'Blockchain Incentivized',
+    content: 'Traders earn TAO or USD daily from the Bittensor blockchain.',
+    icon: BlockchainIcon,
   },
   {
-    title: 'Daily Rewards Payout',
-    content:
-      'Trade as often or as little as you like, but keep your miner active and competitive. Rewards are deposited daily to your wallet or account.',
+    title: 'Keep up your ranking',
+    content: 'No need to trade daily to receive payout, just keep up your ranking.',
+    icon: CardIcon,
   },
   {
-    title: 'Elimination',
-    content:
-      'Spots are limited to 256. The worst performer is eliminated to allow for the next entrant in the queue.',
+    title: '256 Traders at one time',
+    content: 'The worst performing trader is knocked out to make room for a new entrant.',
+    icon: PerformingIcon,
   },
   {
     title: 'Multiple Registrations',
     content:
-      'While plagerism is not allowed, there is no limit on the number of registrations per participant.',
+      'While plagiarism is not allowed, there is no limit to the number of registrations per participant.',
+    icon: MultipleRegister,
+  },
+  {
+    title: 'Traders’ Earnings',
+    content: 'Traders take home up to 90% of earnings.',
+    icon: TraderEarningIcon,
   },
 ];

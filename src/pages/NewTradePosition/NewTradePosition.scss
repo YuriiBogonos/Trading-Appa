@@ -1,0 +1,29 @@
+@import '../../mixins/mixins';
+
+.newtrade-position{
+  text-align: center;
+  max-width: 45.188rem;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  > h1 {
+    @include font-style(Satoshi, 64px, 500, 86.4px, #151414);
+    margin-bottom: 1rem;
+  }
+
+}
+.newtrade-email{
+  @include font-style(Roboto Mono, 16px, 400, 21.1px, #151414);
+  margin-bottom: 3rem;
+}
+.newtrade-button{
+  max-width: 33.125rem;
+  width: 100%;
+  > button{
+    @include FormButton;
+    background: #EA4927;
+    width: 100%;
+  }
+}

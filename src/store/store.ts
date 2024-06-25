@@ -1,15 +1,15 @@
 import { configureStore } from '@reduxjs/toolkit';
 
-import { taoshiApi } from './features/taoshiApi/taoshiApi.ts';
+import { validatorApi } from './features/taoshiApi/validatorAndStatisticsApi.ts';
 import { tradeApi } from './features/trades/tradesSlice.ts';
 
 export const store = configureStore({
   reducer: {
     [tradeApi.reducerPath]: tradeApi.reducer,
-    [taoshiApi.reducerPath]: taoshiApi.reducer,
+    [validatorApi.reducerPath]: validatorApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(tradeApi.middleware).concat(taoshiApi.middleware),
+    getDefaultMiddleware().concat(tradeApi.middleware).concat(validatorApi.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

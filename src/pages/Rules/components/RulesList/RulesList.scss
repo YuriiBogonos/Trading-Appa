@@ -1,0 +1,44 @@
+@import '../../../../mixins/mixins';
+.rules-list{
+  > div {
+    margin-bottom: 3.65rem;
+    > h2 {
+      @include font-style(Satoshi, 32px, 700, 43.2px, white);
+      margin-bottom: 2rem;
+    }
+    > p {
+      @include font-style(Satoshi, 20px, 500, 27px, #000000);
+    }
+  }
+  .rules-list-content{
+    > p {
+      @include font-style(Satoshi, 16px, 400, 20.8px, #000000);
+    }
+    > ul{
+      > li {
+        margin-left: 35px;
+        @include font-style(Satoshi, 16px, 400, 20.8px, #000000);
+      }
+    }
+    > ol{
+      @include font-style(Satoshi, 16px, 400, 20.8px, #000000);
+      > li{
+        > ul{
+          list-style: disc;
+          > li {
+            margin-left: 35px;
+            @include font-style(Satoshi, 16px, 400, 20.8px, #000000);
+          }
+        }
+      }
+    }
+
+  }
+}
+.day-theme .rules-list{
+  > div {
+    > h2 {
+      color: black;
+    }
+  }
+}
