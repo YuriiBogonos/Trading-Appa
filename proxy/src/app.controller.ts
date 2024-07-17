@@ -5,6 +5,16 @@ const proxy = createProxyMiddleware({
   router: (req: any) => {
     return req.query.url as string;
   },
+  on: {
+    proxyReq: (proxyReq, req: any) => {
+      const url = new URL(req.query.url as string);
+      Object.keys(req.headers).forEach((key) => {
+        proxyReq.setHeader(key, req.headers[key]);
+      });
+      proxyReq.setHeader('host', url.host);
+      proxyReq.setHeader('origin', url.origin);
+    },
+  },
   ignorePath: true,
   changeOrigin: true,
 });
