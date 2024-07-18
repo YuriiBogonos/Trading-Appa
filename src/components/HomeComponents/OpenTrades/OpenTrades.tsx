@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 import { FormikProps, useFormik } from 'formik';
 import * as yup from 'yup';
@@ -13,8 +13,11 @@ import { CellContext, flexRender, getCoreRowModel, useReactTable } from '@tansta
 
 import { useAllFieldsFilled } from '../../../hooks/useAllFieldsFilled.tsx';
 import { useAppDispatch } from '../../../hooks/useAppDispatch.ts';
-import { tradeApi } from '../../../store/features/trades/tradesSlice.ts';
-import { useOpenTradeMutation } from '../../../store/features/trades/tradesSlice.ts';
+import {
+  tradeApi,
+  useCloseTradeMutation,
+  useOpenTradeMutation,
+} from '../../../store/features/trades/tradesSlice.ts';
 import './OpenTradesStyles.scss';
 
 interface IOpenTrades {
@@ -85,7 +88,8 @@ const TableCellInput = ({
 const OpenTrades: React.FC<IOpenTrades> = ({ checkpointData, minerHotkey }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-  const [openTrade] = useOpenTradeMutation();
+  const [openTrade, { isSuccess }] = useOpenTradeMutation();
+  const [closeTrade] = useCloseTradeMutation();
   const dispatch = useAppDispatch();
   const tradePairOptions: TradePairOption[] = useMemo(() => {
     const tradePairs = new Set<string>();
@@ -118,6 +122,53 @@ const OpenTrades: React.FC<IOpenTrades> = ({ checkpointData, minerHotkey }) => {
   }, [checkpointData, minerHotkey]);
 
   const [data, setData] = useState<any[]>([...filteredData]);
+
+  useEffect(() => {
+    dispatch(tradeApi.endpoints.getAllPositionsByTradePair.initiate(4060))
+      .unwrap()
+      .then((tradeStatusResult) => {
+        setData((prev) => [
+          ...filteredData,
+          ...tradeStatusResult.map((position) => ({
+            trader_id: position.trader_id,
+            asset_type: position.asset_type,
+            trade_pair: position.trade_pair,
+            leverage: position.cumulative_leverage,
+            order_type: position.cumulative_order_type,
+            returnPercent: '-',
+            take_profit: position.cumulative_take_profit,
+            stop_loss: position.cumulative_stop_loss,
+          })),
+          ...(prev.some(isNewRow) ? [{ ...formik.values }] : []),
+        ]);
+      })
+      .catch((error) => {
+        console.error('Error fetching trade status:', error);
+      });
+  }, [filteredData, isSuccess]);
+  // useEffect(() => {
+  //   const interval = setInterval(async () => {
+  //     const tradeStatusResult = await dispatch(
+  //       tradeApi.endpoints.getAllPositionsByTradePair.initiate(4060)
+  //     ).unwrap();
+  //     setData((prev) => [
+  //       ...filteredData,
+  //       ...tradeStatusResult.map((position) => ({
+  //         trader_id: position.trader_id,
+  //         asset_type: position.asset_type,
+  //         trade_pair: position.trade_pair,
+  //         leverage: position.cumulative_leverage,
+  //         order_type: position.cumulative_order_type,
+  //         returnPercent: '-',
+  //         take_profit: position.cumulative_take_profit,
+  //         stop_loss: position.cumulative_stop_loss,
+  //       })),
+  //       ...(prev.some(isNewRow) ? [{ ...formik.values }] : []),
+  //     ]);
+  //   }, 5000);
+  //   return () => clearInterval(interval);
+  // }, [filteredData]);
+
   const validationSchema = yup.object({
     trade_pair: yup.string().required('Pair is required'),
     order_type: yup.string().required('Position type is required'),
@@ -150,24 +201,32 @@ const OpenTrades: React.FC<IOpenTrades> = ({ checkpointData, minerHotkey }) => {
     },
     validationSchema,
     onSubmit: async (values, { resetForm }) => {
+      console.log('Submitting trade:', values);
       try {
-        const tradeResponse = await openTrade(values).unwrap();
-        alert('Trade opened: ' + tradeResponse.session_id);
+        // const tradeResponse = await openTrade(values).unwrap();
+        // console.log('Trade Details:', tradeResponse);
+        // alert('Trade opened: ' + tradeResponse.session_id);
 
-        if (tradeResponse.session_id) {
-          setInterval(async () => {
-            const tradeStatusResult = await dispatch(
-              tradeApi.endpoints.fetchTradeStatus.initiate(tradeResponse.session_id)
-            ).unwrap();
-            console.log('Trade Details:', tradeStatusResult);
-          }, 5000);
+        // if (tradeResponse.session_id) {
+        //   setInterval(async () => {
+        //     const tradeStatusResult = await dispatch(
+        //       tradeApi.endpoints.fetchTradeStatus.initiate(tradeResponse.session_id)
+        //     ).unwrap();
+        //     console.log('Trade Details:', tradeStatusResult);
+        //   }, 5000);
 
-          // setData((prevData) => [...prevData, { ...values, ...tradeStatusResult }]);
-          resetForm();
-          handleClose();
-        } else {
-          console.error('Session ID was not returned');
-        }
+        //   // setData((prevData) => [...prevData, { ...values, ...tradeStatusResult }]);
+        //   resetForm();
+        //   handleClose();
+        // } else {
+        //   console.error('Session ID was not returned');
+        // }
+
+        await openTrade(values).unwrap();
+
+        //  setData((prevData) => [...prevData, { ...values, ...tradeStatusResult }]);
+        resetForm();
+        handleClose();
       } catch (error) {
         console.error('Error during the trade process:', error);
       }
@@ -316,9 +375,16 @@ const OpenTrades: React.FC<IOpenTrades> = ({ checkpointData, minerHotkey }) => {
             ) : (
               <button
                 className='exit'
-                onClick={() => console.log('Exiting position:', info.row.original)}
+                onClick={() => {
+                  console.log('Exiting position:', info.row.original, data[info.row.index]);
+                  closeTrade({
+                    trader_id: data[info.row.index].trader_id,
+                    trade_pair: data[info.row.index].trade_pair,
+                    asset_type: data[info.row.index].asset_type,
+                  });
+                }}
               >
-                Update Trade
+                Close Trade
               </button>
             )}
           </div>

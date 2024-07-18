@@ -66,7 +66,7 @@ const CloseTrades: React.FC<ICloseTrades> = ({ minerHotkey, checkpointData }) =>
       {
         header: 'Initial Entry Price',
         accessorKey: 'initial_entry_price',
-        cell: (info: CellContext<FilteredData, number>) => info.getValue().toFixed(5),
+        cell: (info: CellContext<FilteredData, number>) => info?.getValue()?.toFixed(5) || 0,
       },
       {
         header: 'Net Leverage',
