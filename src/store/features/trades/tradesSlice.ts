@@ -1,5 +1,6 @@
-import { TradeRequest, TradeResponse, TradeStatus } from '@/types/types.ts';
+import { NewPosition, TradeCloseRequest, TradeRequest, TradeResponse } from '@/types/types.ts';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+
 
 export const tradeApi = createApi({
   reducerPath: 'tradeApi',
@@ -12,15 +13,41 @@ export const tradeApi = createApi({
         body: tradeData,
       }),
     }),
-    fetchTradeStatus: builder.query<TradeStatus, string>({
-      //TODO: Replase sessionId with tradeId
-      query: (sessionId) => ({
-        url: `positions/${sessionId}`,
-        method: 'GET',
+    adjustTrade: builder.mutation<TradeResponse, TradeRequest>({
+      query: (tradeData) => ({
+        url: 'adjust-position',
+        method: 'POST',
+        body: tradeData,
       }),
-      transformResponse: (response: TradeStatus[]) => response[0],
+    }),
+    closeTrade: builder.mutation<TradeResponse, TradeCloseRequest>({
+      query: (tradeData) => ({
+        url: 'close-position',
+        method: 'POST',
+        body: tradeData,
+      }),
+    }),
+    profitLoss: builder.mutation<void, TradeRequest>({
+      query: (tradeData) => ({
+        url: 'profit-loss',
+        method: 'POST',
+        body: tradeData,
+      }),
+    }),
+    getAllPositions: builder.query<NewPosition[], void>({
+      query: () => 'positions',
+    }),
+    getAllPositionsByTradePair: builder.query<NewPosition[], number | string>({
+      query: (tradePair) => `positions/${tradePair}?only_open=true`,
     }),
   }),
 });
 
-export const { useOpenTradeMutation, useFetchTradeStatusQuery } = tradeApi;
+export const {
+  useOpenTradeMutation,
+  useAdjustTradeMutation,
+  useCloseTradeMutation,
+  useGetAllPositionsByTradePairQuery,
+  useGetAllPositionsQuery,
+  useProfitLossMutation,
+} = tradeApi;
