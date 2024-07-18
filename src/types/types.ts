@@ -1,6 +1,5 @@
 import { ComponentType } from 'react';
 
-
 export interface IRoute {
   key: string;
   title: string;
@@ -133,7 +132,7 @@ export interface PriceSource {
 }
 
 export interface TradeResponse {
-  session_id: string;
+  // session_id: string;
   message: string;
 }
 export interface TradeRequest {
@@ -145,18 +144,48 @@ export interface TradeRequest {
   stop_loss: number;
   take_profit: number;
   test_mode: boolean;
-  returnPercent?: number;
+  // returnPercent?: number;
 }
-export interface TradeStatus {
-  tradeOpenTime: string;
-  tradePair: string;
-  assetType: string;
-  orderType: string;
-  leverage: string;
-  entryPrice: number;
-  currentPrice: number;
-  profitLoss: string;
-  feeDeducted: number;
-  takeProfit: string;
-  stopLoss: string;
+export interface TradeCloseRequest {
+  trader_id: number;
+  trade_pair: string;
+  asset_type: string;
+}
+
+// export interface TradeStatus {
+//   tradeOpenTime: string;
+//   tradePair: string;
+//   assetType: string;
+//   orderType: string;
+//   leverage: string;
+//   entryPrice: number;
+//   currentPrice: number;
+//   profitLoss: string;
+//   feeDeducted: number;
+//   takeProfit: string;
+//   stopLoss: string;
+// }
+
+export interface NewPosition {
+  trader_id: number;
+  trade_pair: string;
+  leverage: number;
+  asset_type: string;
+  stop_loss: number;
+  take_profit: number;
+  order_type: string;
+  order_id: number;
+  open_time: string;
+  entry_price: number;
+  operation_type: string;
+  cumulative_leverage: number;
+  cumulative_stop_loss: number;
+  cumulative_take_profit: number;
+  cumulative_order_type: string;
+  status: string;
+  close_time: string;
+  close_price: number;
+  profit_loss: number;
+  position_id: number;
+  trade_order: number;
 }
