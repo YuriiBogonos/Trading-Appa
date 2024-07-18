@@ -15,10 +15,12 @@ import { useAllFieldsFilled } from '../../../hooks/useAllFieldsFilled.tsx';
 import { useAppDispatch } from '../../../hooks/useAppDispatch.ts';
 import {
   tradeApi,
+  useAdjustTradeMutation,
   useCloseTradeMutation,
   useOpenTradeMutation,
 } from '../../../store/features/trades/tradesSlice.ts';
 import './OpenTradesStyles.scss';
+import { ActionMenu } from './_components/ActionButton.tsx';
 
 interface IOpenTrades {
   minerHotkey: string;
@@ -28,12 +30,50 @@ interface TradePairOption {
   value: string;
   label: string;
 }
+
+interface IEditableTrade extends TradeRequest {
+  isEditing?: boolean;
+  isCreating?: boolean;
+}
+const initialValues: IEditableTrade = {
+  trader_id: 4068,
+  trade_pair: '',
+  order_type: '',
+  leverage: 0,
+  asset_type: 'crypto',
+  stop_loss: 0,
+  take_profit: 0,
+  test_mode: false,
+  isEditing: false,
+  isCreating: true,
+};
+
+const validationSchema = yup.object({
+  trade_pair: yup.string().required('Pair is required'),
+  order_type: yup.string().required('Position type is required'),
+  take_profit: yup
+    .number()
+    .min(0, 'Take profit must be at least 0%')
+    .max(50, 'Take profit cannot exceed 50%')
+    .required('Take profit is required'),
+  stop_loss: yup
+    .number()
+    .min(0, 'Stop loss must be at least 0%')
+    .max(9, 'Stop loss cannot exceed 9%')
+    .required('Stop loss is required'),
+  leverage: yup
+    .number()
+    .min(0.001, 'Leverage must be at least 0.001')
+    .max(200, 'Leverage cannot exceed 200')
+    .required('Leverage is required'),
+});
+
 const TableCellInput = ({
   formik,
   fieldKey,
 }: {
-  formik: FormikProps<TradeRequest>;
-  fieldKey: keyof TradeRequest;
+  formik: FormikProps<IEditableTrade>;
+  fieldKey: keyof IEditableTrade;
 }) => {
   const [localValue, setLocalValue] = useState(String(formik.values[fieldKey]));
 
@@ -89,6 +129,7 @@ const OpenTrades: React.FC<IOpenTrades> = ({ checkpointData, minerHotkey }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const [openTrade, { isSuccess }] = useOpenTradeMutation();
+  const [adjustTrade] = useAdjustTradeMutation();
   const [closeTrade] = useCloseTradeMutation();
   const dispatch = useAppDispatch();
   const tradePairOptions: TradePairOption[] = useMemo(() => {
@@ -105,7 +146,7 @@ const OpenTrades: React.FC<IOpenTrades> = ({ checkpointData, minerHotkey }) => {
 
     return Array.from(tradePairs).map((pair) => ({ value: pair, label: pair }));
   }, [checkpointData]);
-  const filteredData = React.useMemo(() => {
+  const filteredData: IEditableTrade[] = React.useMemo(() => {
     if (!checkpointData) return [];
 
     const minerPositions = checkpointData.positions[minerHotkey]?.positions || [];
@@ -118,10 +159,12 @@ const OpenTrades: React.FC<IOpenTrades> = ({ checkpointData, minerHotkey }) => {
         returnPercent: position.return_at_close,
         take_profit: Math.random() * 10,
         stop_loss: Math.random() * 5,
+        trader_id: position.trade_pair[2],
+        asset_type: position.trade_pair[0],
       }));
   }, [checkpointData, minerHotkey]);
 
-  const [data, setData] = useState<any[]>([...filteredData]);
+  const [data, setData] = useState<IEditableTrade[]>([...filteredData]);
 
   useEffect(() => {
     dispatch(tradeApi.endpoints.getAllPositionsByTradePair.initiate(4060))
@@ -135,9 +178,9 @@ const OpenTrades: React.FC<IOpenTrades> = ({ checkpointData, minerHotkey }) => {
             trade_pair: position.trade_pair,
             leverage: position.cumulative_leverage,
             order_type: position.cumulative_order_type,
-            returnPercent: '-',
             take_profit: position.cumulative_take_profit,
             stop_loss: position.cumulative_stop_loss,
+            returnPercent: NaN,
           })),
           ...(prev.some(isNewRow) ? [{ ...formik.values }] : []),
         ]);
@@ -169,62 +212,16 @@ const OpenTrades: React.FC<IOpenTrades> = ({ checkpointData, minerHotkey }) => {
   //   return () => clearInterval(interval);
   // }, [filteredData]);
 
-  const validationSchema = yup.object({
-    trade_pair: yup.string().required('Pair is required'),
-    order_type: yup.string().required('Position type is required'),
-    take_profit: yup
-      .number()
-      .min(0, 'Take profit must be at least 0%')
-      .max(50, 'Take profit cannot exceed 50%')
-      .required('Take profit is required'),
-    stop_loss: yup
-      .number()
-      .min(0, 'Stop loss must be at least 0%')
-      .max(9, 'Stop loss cannot exceed 9%')
-      .required('Stop loss is required'),
-    leverage: yup
-      .number()
-      .min(0.001, 'Leverage must be at least 0.001')
-      .max(200, 'Leverage cannot exceed 200')
-      .required('Leverage is required'),
-  });
-  const formik = useFormik<TradeRequest>({
-    initialValues: {
-      trader_id: 4068,
-      trade_pair: '',
-      order_type: '',
-      leverage: 0,
-      asset_type: 'crypto',
-      stop_loss: 0,
-      take_profit: 0,
-      test_mode: false,
-    },
+  const formik = useFormik<IEditableTrade>({
+    initialValues,
     validationSchema,
     onSubmit: async (values, { resetForm }) => {
       console.log('Submitting trade:', values);
       try {
-        // const tradeResponse = await openTrade(values).unwrap();
-        // console.log('Trade Details:', tradeResponse);
-        // alert('Trade opened: ' + tradeResponse.session_id);
+        if (values.isCreating) await openTrade(values).unwrap();
+        else await adjustTrade(values).unwrap();
 
-        // if (tradeResponse.session_id) {
-        //   setInterval(async () => {
-        //     const tradeStatusResult = await dispatch(
-        //       tradeApi.endpoints.fetchTradeStatus.initiate(tradeResponse.session_id)
-        //     ).unwrap();
-        //     console.log('Trade Details:', tradeStatusResult);
-        //   }, 5000);
-
-        //   // setData((prevData) => [...prevData, { ...values, ...tradeStatusResult }]);
-        //   resetForm();
-        //   handleClose();
-        // } else {
-        //   console.error('Session ID was not returned');
-        // }
-
-        await openTrade(values).unwrap();
-
-        //  setData((prevData) => [...prevData, { ...values, ...tradeStatusResult }]);
+        console.log('Trade submitted successfully');
         resetForm();
         handleClose();
       } catch (error) {
@@ -247,7 +244,7 @@ const OpenTrades: React.FC<IOpenTrades> = ({ checkpointData, minerHotkey }) => {
     }
     setAnchorEl(null);
   };
-  type NewTableDataKeys = keyof TradeRequest;
+  type NewTableDataKeys = keyof IEditableTrade;
   const requiredFields: NewTableDataKeys[] = [
     'trade_pair',
     'order_type',
@@ -257,24 +254,20 @@ const OpenTrades: React.FC<IOpenTrades> = ({ checkpointData, minerHotkey }) => {
   ];
 
   const allFieldsFilled = useAllFieldsFilled(
+    //@ts-ignore
     formik.values,
     formik.touched,
     formik.initialValues,
     requiredFields
   );
-  const isNewRow = (row: TradeRequest) =>
-    row.trade_pair === '' &&
-    row.take_profit === 0 &&
-    row.stop_loss === 0 &&
-    row.leverage === 0 &&
-    row.order_type === '';
+  const isNewRow = (row: IEditableTrade) => row.isCreating || row.isEditing;
 
   const columns = useMemo(
     () => [
       {
         header: 'Pair',
         accessorKey: 'trade_pair',
-        cell: (info: CellContext<TradeRequest, any>) =>
+        cell: (info: CellContext<IEditableTrade, any>) =>
           isNewRow(info.row.original) ? (
             <select
               value={formik.values.trade_pair}
@@ -296,7 +289,7 @@ const OpenTrades: React.FC<IOpenTrades> = ({ checkpointData, minerHotkey }) => {
       {
         header: 'Long/Short',
         accessorKey: 'order_type',
-        cell: (info: CellContext<TradeRequest, any>) =>
+        cell: (info: CellContext<IEditableTrade, any>) =>
           isNewRow(info.row.original) ? (
             <select
               value={formik.values.order_type}
@@ -315,7 +308,7 @@ const OpenTrades: React.FC<IOpenTrades> = ({ checkpointData, minerHotkey }) => {
       {
         header: 'Take Profit (%)',
         accessorKey: 'take_profit',
-        cell: (info: CellContext<TradeRequest, any>) =>
+        cell: (info: CellContext<IEditableTrade, any>) =>
           isNewRow(info.row.original) ? (
             <TableCellInput formik={formik} fieldKey={'take_profit'} />
           ) : (
@@ -325,7 +318,7 @@ const OpenTrades: React.FC<IOpenTrades> = ({ checkpointData, minerHotkey }) => {
       {
         header: 'Stop Loss (%)',
         accessorKey: 'stop_loss',
-        cell: (info: CellContext<TradeRequest, any>) =>
+        cell: (info: CellContext<IEditableTrade, any>) =>
           isNewRow(info.row.original) ? (
             <TableCellInput formik={formik} fieldKey={'stop_loss'} />
           ) : (
@@ -335,7 +328,7 @@ const OpenTrades: React.FC<IOpenTrades> = ({ checkpointData, minerHotkey }) => {
       {
         header: 'Leverage',
         accessorKey: 'leverage',
-        cell: (info: CellContext<TradeRequest, any>) =>
+        cell: (info: CellContext<IEditableTrade, any>) =>
           isNewRow(info.row.original) ? (
             <TableCellInput formik={formik} fieldKey={'leverage'} />
           ) : (
@@ -345,7 +338,7 @@ const OpenTrades: React.FC<IOpenTrades> = ({ checkpointData, minerHotkey }) => {
       {
         header: 'Return (%)',
         accessorKey: 'returnPercent',
-        cell: (info: CellContext<TradeRequest, any>) =>
+        cell: (info: CellContext<IEditableTrade, any>) =>
           isNewRow(info.row.original) ? (
             <TableCellInput formik={formik} fieldKey={'returnPercent'} />
           ) : (
@@ -355,7 +348,7 @@ const OpenTrades: React.FC<IOpenTrades> = ({ checkpointData, minerHotkey }) => {
       {
         id: 'actions',
         accessorKey: '',
-        cell: (info: CellContext<TradeRequest, any>) => (
+        cell: (info: CellContext<IEditableTrade, any>) => (
           <div data-column='Actions'>
             {isNewRow(info.row.original) ? (
               <>
@@ -366,16 +359,26 @@ const OpenTrades: React.FC<IOpenTrades> = ({ checkpointData, minerHotkey }) => {
                 ) : (
                   <button
                     className='exit'
-                    onClick={() => setData(data.filter((_, idx) => idx !== info.row.index))}
+                    onClick={() => {
+                      if (info.row.original.isCreating) {
+                        setData((data) => data.filter((_, idx) => idx !== info.row.index));
+                      } else {
+                        setData((prevData) =>
+                          prevData.map((row, idx) =>
+                            idx === info.row.index ? { ...row, isEditing: false } : row
+                          )
+                        );
+                      }
+                      formik.resetForm();
+                    }}
                   >
                     Cancel
                   </button>
                 )}
               </>
             ) : (
-              <button
-                className='exit'
-                onClick={() => {
+              <ActionMenu
+                onTradeClose={() => {
                   console.log('Exiting position:', info.row.original, data[info.row.index]);
                   closeTrade({
                     trader_id: data[info.row.index].trader_id,
@@ -383,9 +386,17 @@ const OpenTrades: React.FC<IOpenTrades> = ({ checkpointData, minerHotkey }) => {
                     asset_type: data[info.row.index].asset_type,
                   });
                 }}
-              >
-                Close Trade
-              </button>
+                onTradeAdjust={() => {
+                  if (data.some(isNewRow)) return;
+                  console.log('Adjusting position:', info.row.original, data[info.row.index]);
+                  setData((prevData) =>
+                    prevData.map((row, idx) =>
+                      idx === info.row.index ? { ...row, isEditing: true } : row
+                    )
+                  );
+                  formik.setValues(data[info.row.index]);
+                }}
+              />
             )}
           </div>
         ),
@@ -403,7 +414,14 @@ const OpenTrades: React.FC<IOpenTrades> = ({ checkpointData, minerHotkey }) => {
   return (
     <>
       <div className='open-trades'>
-        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            position: 'sticky',
+            left: '0px',
+          }}
+        >
           <h1>Open Trades</h1>
           <IconButton
             onClick={handleClick}
@@ -427,6 +445,7 @@ const OpenTrades: React.FC<IOpenTrades> = ({ checkpointData, minerHotkey }) => {
             Open New Trade
           </MenuItem>
         </Menu>
+
         <table>
           <thead>
             {table.getHeaderGroups().map((headerGroup) => (

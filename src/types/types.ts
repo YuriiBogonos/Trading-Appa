@@ -143,8 +143,8 @@ export interface TradeRequest {
   asset_type: string;
   stop_loss: number;
   take_profit: number;
-  test_mode: boolean;
-  // returnPercent?: number;
+  test_mode?: boolean;
+  returnPercent?: number;
 }
 export interface TradeCloseRequest {
   trader_id: number;

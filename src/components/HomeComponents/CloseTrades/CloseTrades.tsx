@@ -104,7 +104,14 @@ const CloseTrades: React.FC<ICloseTrades> = ({ minerHotkey, checkpointData }) =>
   return (
     <>
       <div className='close-trades'>
-        <h1>Closed Trades</h1>
+        <h1
+          style={{
+            position: 'sticky',
+            left: '0px',
+          }}
+        >
+          Closed Trades
+        </h1>
         <table>
           <thead>
             {table.getHeaderGroups().map((headerGroup) => (
