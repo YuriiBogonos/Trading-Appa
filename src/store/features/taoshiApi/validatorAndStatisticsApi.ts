@@ -4,7 +4,9 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 export const validatorApi = createApi({
   reducerPath: 'validatorApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'https://request.wildsage.io',
+    baseUrl: 'https://traiding-app-proxy.vercel.app/?url=https://request.wildsage.io',
+    // baseUrl: 'http://localhost:8000/?url=https://request.wildsage.io',
+    // baseUrl: 'http://localhost:8000',
   }),
   endpoints: (builder) => ({
     fetchValidator: builder.query<Root, void>({

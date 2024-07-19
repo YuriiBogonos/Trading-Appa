@@ -42,7 +42,7 @@ function Dashboard() {
       </div>
     );
   if (error) return <div>Error loading data</div>;
-
+  console.log(data);
   return (
     <>
       <LogoutButton />

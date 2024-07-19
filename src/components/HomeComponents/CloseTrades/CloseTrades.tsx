@@ -66,7 +66,7 @@ const CloseTrades: React.FC<ICloseTrades> = ({ minerHotkey, checkpointData }) =>
       {
         header: 'Initial Entry Price',
         accessorKey: 'initial_entry_price',
-        cell: (info: CellContext<FilteredData, number>) => info.getValue().toFixed(5),
+        cell: (info: CellContext<FilteredData, number>) => info?.getValue()?.toFixed(5) || 0,
       },
       {
         header: 'Net Leverage',
@@ -104,7 +104,14 @@ const CloseTrades: React.FC<ICloseTrades> = ({ minerHotkey, checkpointData }) =>
   return (
     <>
       <div className='close-trades'>
-        <h1>Closed Trades</h1>
+        <h1
+          style={{
+            position: 'sticky',
+            left: '0px',
+          }}
+        >
+          Closed Trades
+        </h1>
         <table>
           <thead>
             {table.getHeaderGroups().map((headerGroup) => (
