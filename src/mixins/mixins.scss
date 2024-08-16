@@ -23,7 +23,12 @@
   border: none;
   padding: 1rem;
   text-transform: uppercase;
+  &:hover{
+    cursor: pointer;
+  }
 }
+
+
 
 @mixin flex-center {
   display: flex;

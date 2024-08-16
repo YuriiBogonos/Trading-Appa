@@ -14,6 +14,9 @@ const proxy = createProxyMiddleware({
       proxyReq.setHeader('host', url.host);
       proxyReq.setHeader('origin', url.origin);
     },
+    proxyRes: (proxyRes, req: any, res: any) => {
+      proxyRes.headers['Access-Control-Allow-Origin'] = req.headers.origin;
+    },
   },
   ignorePath: true,
   changeOrigin: true,
