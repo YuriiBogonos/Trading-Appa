@@ -27,8 +27,12 @@ function Header() {
       <div className='menu'>
         <nav>
           <ul>
-            <li>How it Works</li>
+            <li>
+              <Link to='/dashboard'>Dashboard</Link>
+            </li>
+            {/* <li>How it Works</li> */}
             <li>Trader Earnings</li>
+
             <li>About us</li>
             <li>
               <Link to='/faq'>Competition Rules and FAQ</Link>
